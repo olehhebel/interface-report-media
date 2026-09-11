@@ -1,0 +1,271 @@
+name: Bootstrap Interface Report source
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: ${{ !contains(github.event.head_commit.message, 'Bootstrap full Interface Report source') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Stop if source is already materialized
+        id: gate
+        shell: bash
+        run: |
+          if [[ -f index.html && -f assets/interface-report-logo.png && -f sitemap.xml ]]; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fetch current production source and assets
+        if: steps.gate.outputs.needed == 'true'
+        env:
+          SITE: https://interface-report-media.vercel.app
+          SHARE: J46687oa5XmZ8LbbnqlcObkFzregQyQk
+        shell: bash
+        run: |
+          set -euo pipefail
+          get() { local route="$1" out="$2"; mkdir -p "$(dirname "$out")"; curl --fail --location --retry 3 "${SITE}${route}?_vercel_share=${SHARE}" -o "$out"; test -s "$out"; }
+          get / index.html
+          get /404.html 404.html
+          get /about/ about/index.html
+          get /advertise/ advertise/index.html
+          get /analysis/agent-ux-patterns/ analysis/agent-ux-patterns/index.html
+          get /analysis/ai-agent-control-surface/ analysis/ai-agent-control-surface/index.html
+          get /analysis/trust-before-intelligence/ analysis/trust-before-intelligence/index.html
+          get /authors/oleh-hebel/ authors/oleh-hebel/index.html
+          get /contact/ contact/index.html
+          get /corrections/ corrections/index.html
+          get /editorial-guidelines/ editorial-guidelines/index.html
+          get /latest/ latest/index.html
+          get /media-kit/ media-kit/index.html
+          get /privacy/ privacy/index.html
+          get /sponsored-content-policy/ sponsored-content-policy/index.html
+          get /submissions/ submissions/index.html
+          get /terms/ terms/index.html
+          get /topics/ai-agents/ topics/ai-agents/index.html
+          get /topics/ai-products/ topics/ai-products/index.html
+          get /topics/design-ux/ topics/design-ux/index.html
+          get /topics/engineering/ topics/engineering/index.html
+          get /topics/human-ai/ topics/human-ai/index.html
+          get /topics/startups-saas/ topics/startups-saas/index.html
+          get /robots.txt robots.txt
+          get /sitemap.xml sitemap.xml
+          get /feed.xml feed.xml
+          for f in styles.css site.js agent-control-surface.svg favicon.svg patterns.svg trust.svg interface-report-logo.png agent-control-surface.png patterns.png trust.png og-default.png favicon.png apple-touch-icon.png; do get "/assets/$f" "assets/$f"; done
+      - name: Apply canonical SEO and publisher identity
+        if: steps.gate.outputs.needed == 'true'
+        shell: bash
+        run: |
+          python -m pip install --quiet beautifulsoup4
+          python <<'PY'
+          from pathlib import Path
+          from bs4 import BeautifulSoup
+          import json, re
+          root=Path('.')
+          canonical='https://interfacereport.com/'
+          logo=canonical+'assets/interface-report-logo.png'
+          article_cfg={
+            'analysis/ai-agent-control-surface/index.html':('AI Agent UX: Control Surfaces Beyond Chat | Interface Report','AI agent UX is shifting beyond chat. A practical framework for intent, permissions, progress, interruption, approval and recovery in agentic products.','Human–AI',['AI agent UX','agentic UX','Human–AI interaction','AI permissions','AI product design'],'Abstract blue control-surface illustration for AI agent intent, permissions, progress and recovery.'),
+            'analysis/trust-before-intelligence/index.html':('AI Product Trust: Design Before Intelligence | Interface Report','Trustworthy AI products make uncertainty, control and recovery visible. Learn the interaction patterns that build confidence before model intelligence.','AI Products',['AI product trust','trustworthy AI UX','AI product design','Human–AI interaction','AI recovery UX'],'Abstract editorial illustration of layered trust signals, uncertainty and human control in an AI product.'),
+            'analysis/agent-ux-patterns/index.html':('Agent UX Patterns: Reveal, Ask, Remember | Interface Report','A practical field guide to agent UX patterns: what AI interfaces should reveal, ask, remember and make recoverable as autonomy increases.','Design & UX',['agent UX patterns','AI interface patterns','AI agent design','AI product UX','Human–AI UX'],'Abstract interface-pattern grid illustrating disclosure, memory and recovery states in AI agent UX.')
+          }
+          titles={
+            'index.html':('Interface Report | AI Products, Agents, Design & Engineering','Independent analysis of AI products, agents, Human–AI interaction, product design, engineering, startups and SaaS for builders and operators.'),
+            'latest/index.html':('Latest AI Product & Agent Analysis | Interface Report','Latest Interface Report analysis on AI products, agents, Human–AI interaction, product design, engineering, startups and SaaS.'),
+            'authors/oleh-hebel/index.html':('Oleh Hebel — Founder & Editor | Interface Report','Oleh Hebel is the founder and editor of Interface Report, covering AI products, agent UX, Human–AI interaction, product design and technology.'),
+            'contact/index.html':('Contact the Editorial Desk | Interface Report','Contact Interface Report for editorial corrections, source material, submissions, partnerships, sponsored content and advertising inquiries.')
+          }
+          for p in root.rglob('*.html'):
+            if '.git' in p.parts: continue
+            rel=p.as_posix()
+            soup=BeautifulSoup(p.read_text(encoding='utf-8'),'html.parser')
+            head=soup.head
+            if rel in titles:
+              title,desc=titles[rel]; soup.title.string=title
+              m=head.find('meta',attrs={'name':'description'}); m['content']=desc
+              for key,attr in [('og:title','property'),('twitter:title','name')]:
+                x=head.find('meta',attrs={attr:key});
+                if x: x['content']=title
+              for key,attr in [('og:description','property'),('twitter:description','name')]:
+                x=head.find('meta',attrs={attr:key});
+                if x: x['content']=desc
+            # Canonical publisher logo/default social identity.
+            for x in head.find_all('meta',attrs={'property':'og:image'}): x['content']=logo if rel not in article_cfg else x.get('content')
+            for x in head.find_all('meta',attrs={'name':'twitter:image'}): x['content']=logo if rel not in article_cfg else x.get('content')
+            for attr,key in [('property','og:image:alt'),('name','twitter:image:alt')]:
+              if rel not in article_cfg and not head.find('meta',attrs={attr:key}):
+                m=soup.new_tag('meta'); m[attr]=key; m['content']='Interface Report logo'; head.append(m)
+            if not head.find('meta',attrs={'property':'og:locale'}):
+              m=soup.new_tag('meta'); m['property']='og:locale'; m['content']='en_US'; head.append(m)
+            # Approved brand in header/footer.
+            for a in soup.select('a.brand'):
+              a.clear(); a['aria-label']='Interface Report home'
+              img=soup.new_tag('img',src='/assets/interface-report-logo.png',alt='Interface Report',width='1536',height='768'); img['class']='brand-logo'; img['decoding']='async'; a.append(img)
+            for box in soup.select('.footer-brand'):
+              box.clear(); img=soup.new_tag('img',src='/assets/interface-report-logo.png',alt='Interface Report',width='1536',height='768'); img['class']='footer-logo'; img['loading']='lazy'; img['decoding']='async'; box.append(img)
+            # Favicon/touch icon.
+            old=head.find('link',rel=lambda v:v and 'icon' in v and 'apple-touch-icon' not in v)
+            if old: old.decompose()
+            fav=soup.new_tag('link',rel='icon',href='/assets/favicon.png',type='image/png',sizes='96x96'); head.append(fav)
+            if not head.find('link',rel='apple-touch-icon'):
+              touch=soup.new_tag('link',rel='apple-touch-icon',href='/assets/apple-touch-icon.png',sizes='180x180'); head.append(touch)
+            # Structured data entity cleanup.
+            for script in head.find_all('script',attrs={'type':'application/ld+json'}):
+              try: data=json.loads(script.string or '')
+              except Exception: continue
+              graph=data.get('@graph',[]) if isinstance(data,dict) else []
+              for node in graph:
+                t=node.get('@type')
+                if t=='Organization' or t=='NewsMediaOrganization':
+                  node['@type']='NewsMediaOrganization'; node['correctionsPolicy']=canonical+'corrections/'; node['ethicsPolicy']=canonical+'editorial-guidelines/'; node['logo']={'@type':'ImageObject','url':logo,'contentUrl':logo,'width':1536,'height':768}; node['image']=dict(node['logo'])
+                if t=='WebSite': node['alternateName']='InterfaceReport'
+              script.string=json.dumps(data,ensure_ascii=False,separators=(',',':'))
+            if rel=='404.html':
+              r=head.find('meta',attrs={'name':'robots'}); r['content']='noindex,follow'
+              c=head.find('link',rel='canonical');
+              if c: c.decompose()
+            if rel in article_cfg:
+              title,desc,section,keywords,alt=article_cfg[rel]
+              soup.title.string=title; head.find('meta',attrs={'name':'description'})['content']=desc
+              for key,attr,val in [('og:title','property',title),('og:description','property',desc),('twitter:title','name',title),('twitter:description','name',desc)]:
+                x=head.find('meta',attrs={attr:key});
+                if x: x['content']=val
+              og=head.find('meta',attrs={'property':'og:image'}); tw=head.find('meta',attrs={'name':'twitter:image'})
+              for anchor,attr,key in [(og,'property','og:image:alt'),(tw,'name','twitter:image:alt')]:
+                x=head.find('meta',attrs={attr:key})
+                if not x:
+                  x=soup.new_tag('meta'); x[attr]=key; anchor.insert_after(x)
+                x['content']=alt
+              if not head.find('meta',attrs={'name':'author'}):
+                m=soup.new_tag('meta'); m['name']='author'; m['content']='Oleh Hebel'; head.append(m)
+              if not head.find('link',rel='author'):
+                l=soup.new_tag('link',rel='author',href='/authors/oleh-hebel/'); head.append(l)
+              hero=soup.select_one('figure.article-image img')
+              if hero: hero['alt']=alt
+              words=len(soup.select_one('article.prose').get_text(' ',strip=True).split()) if soup.select_one('article.prose') else 0
+              for script in head.find_all('script',attrs={'type':'application/ld+json'}):
+                try:data=json.loads(script.string or '')
+                except:continue
+                for node in data.get('@graph',[]):
+                  if node.get('@type') in ('Article','NewsArticle'):
+                    node['isAccessibleForFree']=True; node['wordCount']=words; node['keywords']=keywords
+                script.string=json.dumps(data,ensure_ascii=False,separators=(',',':'))
+            p.write_text(str(soup),encoding='utf-8')
+          # Author identity link.
+          p=Path('authors/oleh-hebel/index.html'); s=BeautifulSoup(p.read_text(),'html.parser')
+          if not s.find('a',href='https://www.linkedin.com/in/olehhebel/'):
+            art=s.select_one('article.prose'); a=s.new_tag('a',href='https://www.linkedin.com/in/olehhebel/'); a['rel']='me'; a.string='LinkedIn profile ↗'; art.append(a)
+          p.write_text(str(s),encoding='utf-8')
+          PY
+      - name: Add indexing and deployment support files
+        if: steps.gate.outputs.needed == 'true'
+        shell: bash
+        run: |
+          cat > requirements.txt <<'EOF'
+          beautifulsoup4==4.12.3
+          EOF
+          cat > package.json <<'EOF'
+          {"name":"interface-report-media","private":true,"scripts":{"check":"python3 scripts/check_site.py","indexnow":"python3 scripts/indexnow.py"}}
+          EOF
+          cat > vercel.json <<'EOF'
+          {"cleanUrls":true,"trailingSlash":true,"headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}]},{"source":"/assets/(.*)","headers":[{"key":"Cache-Control","value":"public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"}]}]}
+          EOF
+          mkdir -p scripts .github/workflows
+          cat > 60a759d8d9915a4816e0dafdc1128b86.txt <<'EOF'
+          60a759d8d9915a4816e0dafdc1128b86
+          EOF
+          cat > scripts/indexnow.py <<'PY'
+          import json,sys,urllib.request
+          from pathlib import Path
+          from urllib.parse import urlparse
+          key=Path('60a759d8d9915a4816e0dafdc1128b86.txt').read_text().strip()
+          urls=sys.argv[1:]
+          if not urls: raise SystemExit('Usage: python3 scripts/indexnow.py https://interfacereport.com/path/ [...]')
+          if any(urlparse(u).hostname!='interfacereport.com' for u in urls): raise SystemExit('Only canonical interfacereport.com URLs are accepted')
+          body=json.dumps({'host':'interfacereport.com','key':key,'keyLocation':f'https://interfacereport.com/{key}.txt','urlList':urls}).encode()
+          req=urllib.request.Request('https://api.indexnow.org/indexnow',data=body,headers={'Content-Type':'application/json; charset=utf-8'},method='POST')
+          with urllib.request.urlopen(req,timeout=30) as r: print(r.status,r.read().decode(errors='replace'))
+          PY
+          cat > .github/workflows/qa.yml <<'EOF'
+          name: Publication QA
+          on:
+            push:
+              branches: [main, "launch/**"]
+            pull_request:
+          permissions:
+            contents: read
+          jobs:
+            validate:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                - uses: actions/setup-python@v5
+                  with:
+                    python-version: "3.12"
+                - run: pip install -r requirements.txt
+                - run: python scripts/check_site.py
+          EOF
+      - name: Add compact site validator
+        if: steps.gate.outputs.needed == 'true'
+        shell: bash
+        run: |
+          cat > scripts/check_site.py <<'PY'
+          from pathlib import Path
+          from bs4 import BeautifulSoup
+          import json,re,sys
+          root=Path('.'); errors=[]; html=list(root.rglob('*.html'))
+          for p in html:
+            if '.git' in p.parts: continue
+            rel=p.as_posix(); s=BeautifulSoup(p.read_text(),'html.parser'); h=s.head
+            robots=h.find('meta',attrs={'name':'robots'}); canonical=h.find('link',rel='canonical')
+            if rel=='404.html':
+              if not robots or 'noindex' not in robots.get('content',''): errors.append(f'{rel}: 404 must be noindex')
+              if canonical: errors.append(f'{rel}: 404 must not canonicalize')
+            else:
+              if not canonical or not canonical.get('href','').startswith('https://interfacereport.com/'): errors.append(f'{rel}: canonical')
+              if not robots or 'index' not in robots.get('content',''): errors.append(f'{rel}: indexability')
+            if not s.title or not h.find('meta',attrs={'name':'description'}): errors.append(f'{rel}: title/description')
+            if not h.find('meta',attrs={'property':'og:image'}) or not h.find('meta',attrs={'name':'twitter:image'}): errors.append(f'{rel}: social image')
+            if not h.find('meta',attrs={'property':'og:locale'}): errors.append(f'{rel}: og locale')
+            if not s.select_one('a.brand img[src="/assets/interface-report-logo.png"]'): errors.append(f'{rel}: approved logo')
+            for x in h.find_all('script',attrs={'type':'application/ld+json'}):
+              try:d=json.loads(x.string or '')
+              except Exception: errors.append(f'{rel}: invalid JSON-LD'); continue
+              org=next((n for n in d.get('@graph',[]) if n.get('@type')=='NewsMediaOrganization'),None)
+              if org and org.get('logo',{}).get('url')!='https://interfacereport.com/assets/interface-report-logo.png': errors.append(f'{rel}: publisher logo schema')
+            if rel.startswith('analysis/'):
+              if len(s.title.get_text())>65: errors.append(f'{rel}: title too long')
+              desc=h.find('meta',attrs={'name':'description'}).get('content','')
+              if not 120<=len(desc)<=160: errors.append(f'{rel}: description length {len(desc)}')
+              if not h.find('meta',attrs={'name':'author'}) or not h.find('link',rel='author'): errors.append(f'{rel}: author metadata')
+              if not h.find('meta',attrs={'property':'og:image:alt'}) or not h.find('meta',attrs={'name':'twitter:image:alt'}): errors.append(f'{rel}: image alt metadata')
+              if len(s.select_one('article.prose').get_text(' ',strip=True).split())<700: errors.append(f'{rel}: thin article')
+          r=Path('robots.txt').read_text(); sm=Path('sitemap.xml').read_text()
+          if 'User-agent: OAI-SearchBot' not in r or 'Allow: /' not in r: errors.append('robots: OAI-SearchBot')
+          if 'User-agent: GPTBot' not in r or 'Disallow: /' not in r: errors.append('robots: GPTBot policy')
+          if 'https://interfacereport.com/' not in sm or '404.html' in sm: errors.append('sitemap')
+          for f in ['assets/interface-report-logo.png','assets/favicon.png','assets/apple-touch-icon.png','assets/agent-control-surface.png','assets/patterns.png','assets/trust.png','feed.xml']:
+            if not Path(f).exists(): errors.append(f'missing {f}')
+          print(f'HTML files checked: {len(html)}')
+          if errors:
+            print('\n'.join(errors)); sys.exit(1)
+          print('All internal publication metadata, brand, crawler and indexing checks passed.')
+          PY
+          python scripts/check_site.py
+      - name: Commit full source
+        if: steps.gate.outputs.needed == 'true'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Bootstrap full Interface Report source'
+          git push
