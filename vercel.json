@@ -1,1 +1,32 @@
-{"cleanUrls":true,"trailingSlash":true,"headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}]},{"source":"/assets/(.*)","headers":[{"key":"Cache-Control","value":"public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"}]}]}
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "alias": ["interfacereport.com", "www.interfacereport.com"],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{"type": "host", "value": "www.interfacereport.com"}],
+      "destination": "https://interfacereport.com/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [{"type": "host", "value": ".*\\.vercel\\.app"}],
+      "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {"key": "X-Content-Type-Options", "value": "nosniff"},
+        {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"}
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [{"key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"}]
+    }
+  ]
+}
