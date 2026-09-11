@@ -1,0 +1,1 @@
+{"name":"interface-report-media","private":true,"scripts":{"check":"python3 scripts/check_site.py","indexnow":"python3 scripts/indexnow.py"}}
