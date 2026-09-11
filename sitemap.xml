@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://interfacereport.com/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image>
+  </url>
   <url><loc>https://interfacereport.com/about/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/advertise/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/analysis/ai-agent-control-surface/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/analysis/trust-before-intelligence/</loc><lastmod>2026-09-11</lastmod></url>
+  <url>
+    <loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://interfacereport.com/analysis/ai-agent-control-surface/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://interfacereport.com/analysis/trust-before-intelligence/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image>
+  </url>
   <url><loc>https://interfacereport.com/authors/oleh-hebel/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/contact/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/corrections/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/editorial-guidelines/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/media-kit/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/privacy/</loc><lastmod>2026-09-11</lastmod></url>
