@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": true,
-  "alias": ["interfacereport.com", "www.interfacereport.com"],
+  "ignoreCommand": "if [ \"$VERCEL_PROJECT_ID\" = \"prj_6Ra5ukPnJccbsSMkq260XlIYEnML\" ]; then exit 1; else echo 'Skipping non-production Vercel project' && exit 0; fi",
   "redirects": [
     {
       "source": "/(.*)",
