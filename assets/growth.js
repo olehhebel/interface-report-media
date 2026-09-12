@@ -179,6 +179,11 @@ function applyCommerce(){
       const anchor=document.createElement('div');anchor.id='commercial-intake';anchor.className='ir-form-anchor';
       const form=advertiserForm();
       anchor.appendChild(form);prose.appendChild(anchor);bindAdvertiserForm(form);
+      const requestedPackage=new URLSearchParams(location.search).get('package');
+      if(slugs.includes(requestedPackage)){
+        const select=form.querySelector('[name="package"]');
+        if(select)select.value=requestedPackage;
+      }
       document.querySelectorAll('[data-package]').forEach(link=>link.addEventListener('click',()=>{
         const select=form.querySelector('[name="package"]');if(select)select.value=link.dataset.package;
       }));
