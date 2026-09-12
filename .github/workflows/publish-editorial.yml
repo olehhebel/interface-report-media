@@ -37,6 +37,7 @@ jobs:
           python - <<'PY'
           import pathlib, re, xml.etree.ElementTree as ET
           root = pathlib.Path('.')
+          corruption = re.compile(r'\b(?:iona|ionas|ionience)\b', re.I)
           slugs = [
               'data-agent-kills-dashboard-first-analytics',
               'gpt-6-astra-model-is-not-the-product',
@@ -64,13 +65,13 @@ jobs:
               assert '/assets/og-default.png' not in text, f'default publisher art leaked into article image in {slug}'
               assert '/assets/interface-report-logo.png' in text, f'missing canonical brand asset in {slug}'
               assert '"width":1536' in text and '"height":768' in text, f'missing canonical logo dimensions in {slug}'
-              assert 'iona' not in text and 'ionience' not in text, f'generated-text corruption remains in {slug}'
+              assert not corruption.search(text), f'generated-text corruption remains in {slug}'
               match = re.search(r'<link rel="canonical" href="([^"]+)"', text)
               assert match, f'canonical parse failed in {slug}'
               assert match.group(1) not in canonicals, f'duplicate canonical in {slug}'
               canonicals.add(match.group(1))
           feed = pathlib.Path('feed.xml').read_text(encoding='utf-8')
-          assert 'iona' not in feed and 'ionience' not in feed, 'generated-text corruption remains in feed'
+          assert not corruption.search(feed), 'generated-text corruption remains in feed'
           ET.parse('sitemap.xml')
           ET.parse('news-sitemap.xml')
           ET.parse('feed.xml')
