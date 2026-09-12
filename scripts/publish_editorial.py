@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the reviewed September 12, 2026 Interface Report editorial package."""
+"""Generate the reviewed September 12, 2026 Interface Report editorial package and run scoped QA."""
 from __future__ import annotations
 import base64
 import hashlib
