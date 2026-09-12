@@ -7,7 +7,8 @@ import io
 import pathlib
 import tarfile
 
-SHA256 = "371b724136bc81e0fd31cf0c4b94b4d3e039151f376e063a857b53d6e58fda6b"
+# SHA-256 of the exact archive assembled from the repository payload chunks.
+SHA256 = "ddc1796f20a4fabf053a5e7a423da3fb3f72b32c0d3e7186abbc222692fb33b3"
 repo = pathlib.Path(__file__).resolve().parents[1]
 parts = [
     "editorial_payload_01.txt",
