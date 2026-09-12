@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 REPLACEMENTS = {
@@ -19,6 +20,7 @@ REPLACEMENTS = {
     "synchronous ionas": "synchronous paths",
     "machine-usable iona alongside": "machine-usable path alongside",
 }
+CORRUPTION_RE = re.compile(r"\b(?:iona|ionas|ionience)\b", re.IGNORECASE)
 
 changed = []
 for pattern in ("*.html", "*.xml"):
@@ -39,7 +41,7 @@ for pattern in ("*.html", "*.xml"):
         if ".git" in path.parts:
             continue
         text = path.read_text(encoding="utf-8")
-        if "iona" in text or "ionience" in text:
+        if CORRUPTION_RE.search(text):
             remaining.append(str(path.relative_to(ROOT)))
 if remaining:
     raise SystemExit("unrepaired generated-text corruption remains: " + ", ".join(sorted(set(remaining))))
