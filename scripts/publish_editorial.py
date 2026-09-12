@@ -9,7 +9,15 @@ import tarfile
 
 SHA256 = "371b724136bc81e0fd31cf0c4b94b4d3e039151f376e063a857b53d6e58fda6b"
 repo = pathlib.Path(__file__).resolve().parents[1]
-payload = "".join((repo / "scripts" / f"editorial_payload_{i:02d}.txt").read_text(encoding="utf-8").strip() for i in range(1, 6))
+parts = [
+    "editorial_payload_01.txt",
+    "editorial_payload_02.txt",
+    "editorial_payload_03.txt",
+    "editorial_payload_04a.txt",
+    "editorial_payload_04b.txt",
+    "editorial_payload_05.txt",
+]
+payload = "".join((repo / "scripts" / name).read_text(encoding="utf-8").strip() for name in parts)
 raw = base64.b64decode(payload)
 actual = hashlib.sha256(raw).hexdigest()
 if actual != SHA256:
