@@ -9,5 +9,3 @@ Disallow: /
 
 Sitemap: https://interfacereport.com/sitemap.xml
 Sitemap: https://interfacereport.com/news-sitemap.xml
-
-# Production refresh: 2026-09-12
