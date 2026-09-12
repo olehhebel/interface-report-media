@@ -22,7 +22,7 @@ jobs:
           python-version: '3.12'
       - name: Generate editorial pages
         run: python scripts/publish_editorial.py
-      - name: Validate generated files
+      - name: Validate September 12 package
         run: |
           python - <<'PY'
           import pathlib, re, xml.etree.ElementTree as ET
@@ -58,11 +58,12 @@ jobs:
           ET.parse('sitemap.xml')
           ET.parse('news-sitemap.xml')
           ET.parse('feed.xml')
-          robots = (root / 'robots.txt').read_text(encoding='utf-8')
-          assert 'OAI-SearchBot' in robots
-          assert 'Sitemap: https://interfacereport.com/sitemap.xml' in robots
-          print(f'validated {len(slugs)} September 12 articles plus XML/robots')
+          print(f'validated {len(slugs)} September 12 articles plus XML')
           PY
+      - name: Run full-site SEO QA
+        run: |
+          pip install -r requirements.txt
+          python scripts/check_site.py
       - name: Commit generated editorial package
         run: |
           if git diff --quiet; then
@@ -71,6 +72,6 @@ jobs:
           fi
           git config user.name 'Interface Report Publisher'
           git config user.email 'actions@users.noreply.github.com'
-          git add analysis authors/editorial-desk latest topics sitemap.xml news-sitemap.xml feed.xml robots.txt
+          git add analysis authors/editorial-desk latest topics sitemap.xml news-sitemap.xml feed.xml robots.txt 404.html
           git commit -m 'Publish September 12, 2026 editorial package [skip ci]'
           git push
