@@ -13,4 +13,4 @@ Canonical domain: https://interfacereport.com/
 - IndexNow support for newly published or materially changed URLs
 - GitHub Actions publication QA on pushes and pull requests
 
-Do not submit IndexNow until the custom domain and key file resolve publicly. Add the property to Google Search Console after DNS/HTTPS is live, submit `/sitemap.xml`, and inspect representative canonical URLs.
+The custom domain and HTTPS are live. Keep Google Search Console ownership verified, submit `/sitemap.xml`, and inspect representative canonical URLs. Submit IndexNow only while the published key file resolves publicly.
