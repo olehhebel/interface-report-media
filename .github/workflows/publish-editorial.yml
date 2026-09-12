@@ -1,0 +1,51 @@
+name: Publish editorial package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/publish_editorial.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate editorial pages
+        run: python scripts/publish_editorial.py
+      - name: Validate generated files
+        run: |
+          python - <<'PY'
+          import json, pathlib, re, xml.etree.ElementTree as ET
+          root = pathlib.Path('.')
+          pages = list((root/'analysis').glob('*/index.html'))
+          assert len(pages) >= 15, f'expected at least 15 analysis pages, found {len(pages)}'
+          for p in pages:
+              text = p.read_text(encoding='utf-8')
+              assert '<link rel="canonical"' in text
+              assert 'application/ld+json' in text
+          ET.parse('sitemap.xml')
+          ET.parse('news-sitemap.xml')
+          ET.parse('feed.xml')
+          print(f'validated {len(pages)} analysis pages')
+          PY
+      - name: Commit generated editorial package
+        run: |
+          if git diff --quiet; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'Interface Report Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git add analysis authors/editorial-desk latest topics sitemap.xml news-sitemap.xml feed.xml robots.txt
+          git commit -m 'Publish September 12, 2026 editorial package [skip ci]'
+          git push
