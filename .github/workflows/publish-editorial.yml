@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/publish_editorial.py'
       - 'scripts/fix_article_images.py'
+      - 'scripts/fix_branding.py'
       - '.github/workflows/publish-editorial.yml'
   workflow_dispatch:
 
@@ -26,6 +27,8 @@ jobs:
         run: python scripts/publish_editorial.py
       - name: Apply topic-specific article images
         run: python scripts/fix_article_images.py
+      - name: Normalize canonical branding and organization schema
+        run: python scripts/fix_branding.py
       - name: Validate September 12 package
         run: |
           python - <<'PY'
@@ -56,6 +59,8 @@ jobs:
               assert '2026-09-12' in text, f'wrong publication date in {slug}'
               assert 'Interface Report Editorial Desk' in text, f'missing editorial byline in {slug}'
               assert '/assets/og-default.png' not in text, f'default publisher art leaked into article image in {slug}'
+              assert '/assets/interface-report-logo.png' in text, f'missing canonical brand asset in {slug}'
+              assert '"width":1536' in text and '"height":768' in text, f'missing canonical logo dimensions in {slug}'
               match = re.search(r'<link rel="canonical" href="([^"]+)"', text)
               assert match, f'canonical parse failed in {slug}'
               assert match.group(1) not in canonicals, f'duplicate canonical in {slug}'
