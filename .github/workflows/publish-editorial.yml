@@ -25,18 +25,43 @@ jobs:
       - name: Validate generated files
         run: |
           python - <<'PY'
-          import json, pathlib, re, xml.etree.ElementTree as ET
+          import pathlib, re, xml.etree.ElementTree as ET
           root = pathlib.Path('.')
-          pages = list((root/'analysis').glob('*/index.html'))
-          assert len(pages) >= 15, f'expected at least 15 analysis pages, found {len(pages)}'
-          for p in pages:
+          slugs = [
+              'data-agent-kills-dashboard-first-analytics',
+              'gpt-6-astra-model-is-not-the-product',
+              'agents-api-build-vs-orchestrate',
+              'agent-harness-portability-infrastructure',
+              'permission-ux-is-ai-safety-interface',
+              'evidence-loop-ai-analytics-trust',
+              'full-duplex-voice-ui-design-rules',
+              'stop-making-every-ai-feature-chat',
+              'production-agent-sandbox-checklist',
+              'tail-latency-ai-product-engineering',
+              'ai-pricing-is-a-product-system',
+              'agent-ready-saas-nonhuman-buyer',
+          ]
+          canonicals = set()
+          for slug in slugs:
+              p = root / 'analysis' / slug / 'index.html'
+              assert p.exists(), f'missing {p}'
               text = p.read_text(encoding='utf-8')
-              assert '<link rel="canonical"' in text
-              assert 'application/ld+json' in text
+              assert text.count('<h1') == 1, f'expected one H1 in {slug}'
+              assert '<link rel="canonical"' in text, f'missing canonical in {slug}'
+              assert 'application/ld+json' in text, f'missing Article JSON-LD in {slug}'
+              assert '2026-09-12' in text, f'wrong publication date in {slug}'
+              assert 'Interface Report Editorial Desk' in text, f'missing editorial byline in {slug}'
+              match = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+              assert match, f'canonical parse failed in {slug}'
+              assert match.group(1) not in canonicals, f'duplicate canonical in {slug}'
+              canonicals.add(match.group(1))
           ET.parse('sitemap.xml')
           ET.parse('news-sitemap.xml')
           ET.parse('feed.xml')
-          print(f'validated {len(pages)} analysis pages')
+          robots = (root / 'robots.txt').read_text(encoding='utf-8')
+          assert 'OAI-SearchBot' in robots
+          assert 'Sitemap: https://interfacereport.com/sitemap.xml' in robots
+          print(f'validated {len(slugs)} September 12 articles plus XML/robots')
           PY
       - name: Commit generated editorial package
         run: |
