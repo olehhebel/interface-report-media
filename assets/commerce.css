@@ -1,0 +1,15 @@
+.ir-telegram-fab{position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:#065DFF;color:#fff!important;font-size:14px;font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 42px rgba(6,93,255,.28);border:1px solid rgba(255,255,255,.3);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s cubic-bezier(.2,.8,.2,1)}
+.ir-telegram-fab:hover{transform:translateY(-3px);box-shadow:0 18px 54px rgba(6,93,255,.36)}
+.ir-telegram-fab:focus-visible{outline:3px solid #080A0D;outline-offset:3px}
+.ir-telegram-fab-dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.55);animation:irPulse 2.4s infinite}
+@keyframes irPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
+.ir-price-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.ir-price-actions a{display:inline-flex!important;align-items:center;justify-content:center;min-height:44px;padding:11px 15px;border-radius:999px!important;text-decoration:none!important;font-size:13px!important;font-weight:700;background:#065DFF;color:#fff!important;border:1px solid #065DFF;transition:transform .18s ease,background .18s ease}
+.ir-price-actions a:hover{transform:translateY(-2px)}
+.ir-price-actions a.ir-secondary{background:transparent;color:#065DFF!important}
+.ir-commerce-strip{margin:36px 0 8px;padding:26px;border-radius:18px;background:#080A0D;color:#fff;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
+.ir-commerce-strip strong{display:block;font-size:clamp(24px,3vw,38px);line-height:1.05;letter-spacing:-.035em;font-weight:500}
+.ir-commerce-strip p{margin:8px 0 0!important;color:rgba(255,255,255,.65);font-size:14px!important;line-height:1.5!important}
+.ir-commerce-strip a{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:13px 18px;border-radius:999px;background:#fff;color:#080A0D!important;text-decoration:none!important;font-size:13px!important;font-weight:700}
+@media(max-width:700px){.ir-telegram-fab{right:14px;bottom:14px;padding:13px 15px}.ir-commerce-strip{grid-template-columns:1fr}.ir-commerce-strip a{width:100%}.ir-price-actions{display:grid;grid-template-columns:1fr}.ir-price-actions a{width:100%}}
+@media(prefers-reduced-motion:reduce){.ir-telegram-fab-dot{animation:none}.ir-telegram-fab,.ir-price-actions a{transition:none}}
