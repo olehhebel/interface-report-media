@@ -8,3 +8,4 @@ User-agent: GPTBot
 Disallow: /
 
 Sitemap: https://interfacereport.com/sitemap.xml
+Sitemap: https://interfacereport.com/news-sitemap.xml

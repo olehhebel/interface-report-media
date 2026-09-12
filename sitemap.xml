@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url>
-    <loc>https://interfacereport.com/</loc>
-    <lastmod>2026-09-12</lastmod>
-    <image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image>
-  </url>
+  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/about/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/advertise/</loc><lastmod>2026-09-12</lastmod></url>
-  <url>
-    <loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc>
-    <lastmod>2026-09-11</lastmod>
-    <image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://interfacereport.com/analysis/ai-agent-control-surface/</loc>
-    <lastmod>2026-09-11</lastmod>
-    <image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://interfacereport.com/analysis/trust-before-intelligence/</loc>
-    <lastmod>2026-09-11</lastmod>
-    <image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image>
-  </url>
+  <url><loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc><lastmod>2026-09-11</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/ai-agent-control-surface/</loc><lastmod>2026-09-11</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/trust-before-intelligence/</loc><lastmod>2026-09-11</lastmod><image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/authors/oleh-hebel/</loc><lastmod>2026-09-11</lastmod></url>
+  <url><loc>https://interfacereport.com/authors/editorial-desk/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/contact/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/corrections/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/editorial-guidelines/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-11</lastmod></url>
+  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/media-kit/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/privacy/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/sponsored-content-policy/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/submissions/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/terms/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/ai-agents/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/ai-products/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/engineering/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/human-ai/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/startups-saas/</loc><lastmod>2026-09-11</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/ai-products/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/ai-agents/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/human-ai/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/engineering/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/startups-saas/</loc><lastmod>2026-09-12</lastmod></url>
+  <url><loc>https://interfacereport.com/analysis/data-agent-kills-dashboard-first-analytics/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/gpt-6-astra-model-is-not-the-product/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/agents-api-build-vs-orchestrate/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/agent-harness-portability-infrastructure/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/permission-ux-is-ai-safety-interface/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/evidence-loop-ai-analytics-trust/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/full-duplex-voice-ui-design-rules/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/stop-making-every-ai-feature-chat/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/production-agent-sandbox-checklist/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/tail-latency-ai-product-engineering/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/ai-pricing-is-a-product-system/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/agent-ready-saas-nonhuman-buyer/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
 </urlset>
