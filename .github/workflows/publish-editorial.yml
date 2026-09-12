@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/publish_editorial.py'
+      - 'scripts/fix_article_images.py'
+      - '.github/workflows/publish-editorial.yml'
   workflow_dispatch:
 
 permissions:
@@ -22,6 +24,8 @@ jobs:
           python-version: '3.12'
       - name: Generate editorial pages
         run: python scripts/publish_editorial.py
+      - name: Apply topic-specific article images
+        run: python scripts/fix_article_images.py
       - name: Validate September 12 package
         run: |
           python - <<'PY'
@@ -51,6 +55,7 @@ jobs:
               assert 'application/ld+json' in text, f'missing Article JSON-LD in {slug}'
               assert '2026-09-12' in text, f'wrong publication date in {slug}'
               assert 'Interface Report Editorial Desk' in text, f'missing editorial byline in {slug}'
+              assert '/assets/og-default.png' not in text, f'default publisher art leaked into article image in {slug}'
               match = re.search(r'<link rel="canonical" href="([^"]+)"', text)
               assert match, f'canonical parse failed in {slug}'
               assert match.group(1) not in canonicals, f'duplicate canonical in {slug}'
