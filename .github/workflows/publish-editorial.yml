@@ -8,6 +8,7 @@ on:
       - 'scripts/fix_article_images.py'
       - 'scripts/fix_branding.py'
       - 'scripts/fix_generated_text.py'
+      - 'scripts/fix_breadcrumb_schema.py'
       - '.github/workflows/publish-editorial.yml'
   workflow_dispatch:
 
@@ -32,12 +33,15 @@ jobs:
         run: python scripts/fix_branding.py
       - name: Repair deterministic generated-text corruption
         run: python scripts/fix_generated_text.py
+      - name: Ensure article breadcrumb schema
+        run: python scripts/fix_breadcrumb_schema.py
       - name: Validate September 12 package
         run: |
           python - <<'PY'
-          import pathlib, re, xml.etree.ElementTree as ET
+          import json, pathlib, re, xml.etree.ElementTree as ET
           root = pathlib.Path('.')
           corruption = re.compile(r'\b(?:iona|ionas|ionience)\b', re.I)
+          schema_re = re.compile(r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>', re.S | re.I)
           slugs = [
               'data-agent-kills-dashboard-first-analytics',
               'gpt-6-astra-model-is-not-the-product',
@@ -66,6 +70,12 @@ jobs:
               assert '/assets/interface-report-logo.png' in text, f'missing canonical brand asset in {slug}'
               assert '"width":1536' in text and '"height":768' in text, f'missing canonical logo dimensions in {slug}'
               assert not corruption.search(text), f'generated-text corruption remains in {slug}'
+              schema_match = schema_re.search(text)
+              assert schema_match, f'JSON-LD parse failed in {slug}'
+              graph = json.loads(schema_match.group(1)).get('@graph', [])
+              breadcrumbs = [node for node in graph if isinstance(node, dict) and node.get('@type') == 'BreadcrumbList']
+              assert len(breadcrumbs) == 1, f'expected exactly one BreadcrumbList in {slug}'
+              assert len(breadcrumbs[0].get('itemListElement', [])) >= 2, f'incomplete BreadcrumbList in {slug}'
               match = re.search(r'<link rel="canonical" href="([^"]+)"', text)
               assert match, f'canonical parse failed in {slug}'
               assert match.group(1) not in canonicals, f'duplicate canonical in {slug}'
