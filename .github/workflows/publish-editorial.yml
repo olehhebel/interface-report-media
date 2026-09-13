@@ -9,6 +9,7 @@ on:
       - 'scripts/fix_branding.py'
       - 'scripts/fix_generated_text.py'
       - 'scripts/fix_breadcrumb_schema.py'
+      - 'scripts/merge_sitemap_entries.py'
       - '.github/workflows/publish-editorial.yml'
   workflow_dispatch:
 
@@ -25,8 +26,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Snapshot current sitemap
+        run: cp sitemap.xml /tmp/interface-report-sitemap-before.xml
       - name: Generate editorial pages
         run: python scripts/publish_editorial.py
+      - name: Restore non-editorial sitemap entries
+        run: python scripts/merge_sitemap_entries.py /tmp/interface-report-sitemap-before.xml
       - name: Apply topic-specific article images
         run: python scripts/fix_article_images.py
       - name: Normalize canonical branding and organization schema
