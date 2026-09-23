@@ -71,6 +71,32 @@ module.exports = async function handler(req, res) {
 
   console.log('IR_WEB_LEAD', JSON.stringify(record));
 
+  // Email is the primary notification channel. Never report a completed
+  // application if the configured delivery provider rejected the message.
+  const resendKey = process.env.RESEND_API_KEY;
+  const from = process.env.IR_LEADS_FROM || 'Interface Report <leads@interfacereport.com>';
+  if (!resendKey) {
+    console.error('web-lead-email-not-configured', applicationId);
+    return res.status(503).json({ ok: false, error: 'email_not_configured' });
+  }
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json', 'Idempotency-Key': applicationId },
+      body: JSON.stringify({
+        from,
+        to: ['drgebel@gmail.com'],
+        reply_to: email,
+        subject: `Interface Report request · ${plan.title} · ${company}`,
+        text: `Application: ${applicationId}\nPackage: ${plan.title} ($${plan.price})\nCompany: ${company}\nURL: ${url || '—'}\nContact: ${email}\nTelegram: ${telegram || '—'}\nGoal / angle:\n${goal}\n\nSource: ${record.source}\nSubmitted: ${record.createdAt}\n\nReview editorial fit before publication.`
+      })
+    });
+    if (!response.ok) throw new Error(`resend_${response.status}`);
+  } catch (error) {
+    console.error('web-lead-email-failed', applicationId, error?.message || error);
+    return res.status(502).json({ ok: false, error: 'email_delivery_failed' });
+  }
+
   if (BOT_TOKEN && LEADS_CHAT_ID) {
     try {
       await tg('sendMessage', {

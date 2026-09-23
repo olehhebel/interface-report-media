@@ -10,7 +10,7 @@
   <url><loc>https://interfacereport.com/contact/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/corrections/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/editorial-guidelines/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-23</lastmod></url>
   <url><loc>https://interfacereport.com/media-kit/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/newsletter/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/privacy/</loc><lastmod>2026-09-11</lastmod></url>
@@ -23,7 +23,7 @@
   <url><loc>https://interfacereport.com/topics/ai-products/</loc><lastmod>2026-09-21</lastmod></url>
   <url><loc>https://interfacereport.com/topics/ai-agents/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/topics/human-ai/</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-23</lastmod></url>
   <url><loc>https://interfacereport.com/topics/engineering/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/topics/startups-saas/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc><lastmod>2026-09-11</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
@@ -46,4 +46,7 @@
   <url><loc>https://interfacereport.com/analysis/salesforce-aiforce-live-interface-enterprise-ui/</loc><lastmod>2026-09-21</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/ai-misalignment-disclosure-product-trust-interface/</loc><lastmod>2026-09-21</lastmod><image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/claude-unified-interface-tool-picker-disappears/</loc><lastmod>2026-09-21</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/multi-brand-design-system-architecture/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/shopify-polaris-cross-surface-design-system/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/decagon-deco-ai-design-system-handoff/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
 </urlset>
