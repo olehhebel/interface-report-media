@@ -181,9 +181,9 @@ function applyCommerce(){
   if(!document.querySelector('.ir-telegram-fab')){
     const fab=document.createElement('a');
     fab.className='ir-telegram-fab';
-    fab.href='/api/telegram-link?start=site';
-    fab.setAttribute('aria-label','Open the Interface Report commercial desk in Telegram');
-    fab.innerHTML='<span class="ir-telegram-fab-dot" aria-hidden="true"></span><span>Commercial desk ↗</span>';
+    fab.href='/commercial-deck/';
+    fab.setAttribute('aria-label','Open the Interface Report Commercial Deck');
+    fab.innerHTML='<span class="ir-telegram-fab-dot" aria-hidden="true"></span><span>Commercial Deck ↗</span>';
     document.body.appendChild(fab);
   }
 
