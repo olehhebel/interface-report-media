@@ -22,9 +22,11 @@ This file documents the runtime configuration required by the Growth & Monetizat
 
 The website's sponsored-story form emails each accepted application to
 `drgebel@gmail.com` before presenting the payment step. Configure
-`RESEND_API_KEY` for this Vercel project and verify `interfacereport.com` as a
-sending domain with Resend. The default sender is
-`Interface Report <leads@interfacereport.com>`; set `IR_LEADS_FROM` only if
+`RESEND_API_KEY` for this Vercel project and verify
+`notifications.interfacereport.com` as a sending subdomain in Resend. Copy the
+exact DNS records shown in Resend into the authoritative DNS zone for
+`interfacereport.com`, then wait for the domain to be marked Verified. The default sender is
+`Interface Report <leads@notifications.interfacereport.com>`; set `IR_LEADS_FROM` only if
 another verified sender is required. The applicant's email is set as Reply-To.
 If the key is missing or the provider rejects the message, the form reports
 an error and does not claim that the application was received. Telegram is a

@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
   // Email is the primary notification channel. Never report a completed
   // application if the configured delivery provider rejected the message.
   const resendKey = process.env.RESEND_API_KEY;
-  const from = process.env.IR_LEADS_FROM || 'Interface Report <leads@interfacereport.com>';
+  const from = process.env.IR_LEADS_FROM || 'Interface Report <leads@notifications.interfacereport.com>';
   if (!resendKey) {
     console.error('web-lead-email-not-configured', applicationId);
     return res.status(503).json({ ok: false, error: 'email_not_configured' });
