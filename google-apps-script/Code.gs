@@ -41,7 +41,7 @@ function doPost(e) {
     if (cache.get(id) === 'sent') return reply(true, id, '');
     if (MailApp.getRemainingDailyQuota() < 1) return reply(false, id, 'daily_quota_exceeded');
     MailApp.sendEmail({
-      to: 'drgebel@gmail.com',
+      to: 'doctorgebel@gmail.com',
       replyTo: email,
       name: 'Interface Report',
       subject: 'Interface Report request · ' + plan + ' · ' + company,

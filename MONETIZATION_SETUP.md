@@ -21,7 +21,7 @@ This file documents the runtime configuration required by the Growth & Monetizat
 - `TELEGRAM_LEADS_CHAT_ID`
 
 The website's sponsored-story form emails accepted applications to
-`drgebel@gmail.com` through a free Google Apps Script Web app. Follow the
+`doctorgebel@gmail.com` through a free Google Apps Script Web app. Follow the
 project-specific setup in [`google-apps-script/README.md`](google-apps-script/README.md).
 Set `GOOGLE_SCRIPT_WEBHOOK_URL` and `GOOGLE_SCRIPT_WEBHOOK_SECRET` in Vercel
 Production; redeploy after adding them. The secret is shared only between the
