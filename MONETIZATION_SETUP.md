@@ -20,17 +20,15 @@ This file documents the runtime configuration required by the Growth & Monetizat
 - `TELEGRAM_WEBHOOK_SECRET`
 - `TELEGRAM_LEADS_CHAT_ID`
 
-The website's sponsored-story form emails each accepted application to
-`drgebel@gmail.com` before presenting the payment step. Configure
-`RESEND_API_KEY` for this Vercel project and verify
-`notifications.interfacereport.com` as a sending subdomain in Resend. Copy the
-exact DNS records shown in Resend into the authoritative DNS zone for
-`interfacereport.com`, then wait for the domain to be marked Verified. The default sender is
-`Interface Report <leads@notifications.interfacereport.com>`; set `IR_LEADS_FROM` only if
-another verified sender is required. The applicant's email is set as Reply-To.
-If the key is missing or the provider rejects the message, the form reports
-an error and does not claim that the application was received. Telegram is a
-secondary copy after successful email delivery.
+The website's sponsored-story form emails accepted applications to
+`drgebel@gmail.com` through a free Google Apps Script Web app. Follow the
+project-specific setup in [`google-apps-script/README.md`](google-apps-script/README.md).
+Set `GOOGLE_SCRIPT_WEBHOOK_URL` and `GOOGLE_SCRIPT_WEBHOOK_SECRET` in Vercel
+Production; redeploy after adding them. The secret is shared only between the
+Vercel function and a Google Apps Script property. The applicant's email is
+set as Reply-To. Until the script and variables are configured, the form
+returns a clear error rather than falsely claiming to have sent a message.
+Telegram is a secondary copy after successful email delivery.
 
 The leads chat receives new Telegram and web commercial applications. Telegram applications expose admin **Approve → PayPal** and **Decline** actions. A PayPal link is not shown to the applicant before approval.
 

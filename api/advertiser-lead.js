@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'invalid_submission' });
   }
 
-  const applicationId = `IR-WEB-${Date.now().toString(36).toUpperCase()}`;
+  const applicationId = `IR-WEB-${Date.now().toString(36).toUpperCase()}-${require('node:crypto').randomBytes(4).toString('hex').toUpperCase()}`;
   const record = {
     applicationId,
     package: packageId,
@@ -71,27 +71,31 @@ module.exports = async function handler(req, res) {
 
   console.log('IR_WEB_LEAD', JSON.stringify(record));
 
-  // Email is the primary notification channel. Never report a completed
-  // application if the configured delivery provider rejected the message.
-  const resendKey = process.env.RESEND_API_KEY;
-  const from = process.env.IR_LEADS_FROM || 'Interface Report <leads@notifications.interfacereport.com>';
-  if (!resendKey) {
+  // Email is the primary notification channel. Google Apps Script executes
+  // as the mailbox owner; no third-party email subscription or SMTP password.
+  const mailUrl = process.env.GOOGLE_SCRIPT_WEBHOOK_URL;
+  const mailSecret = process.env.GOOGLE_SCRIPT_WEBHOOK_SECRET;
+  if (!mailUrl || !mailSecret) {
     console.error('web-lead-email-not-configured', applicationId);
     return res.status(503).json({ ok: false, error: 'email_not_configured' });
   }
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    const endpoint = new URL(mailUrl);
+    if (endpoint.protocol !== 'https:' || endpoint.hostname !== 'script.google.com' || !endpoint.pathname.startsWith('/macros/s/') || !endpoint.pathname.endsWith('/exec')) {
+      throw new Error('invalid_google_script_url');
+    }
+    const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json', 'Idempotency-Key': applicationId },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from,
-        to: ['drgebel@gmail.com'],
-        reply_to: email,
-        subject: `Interface Report request · ${plan.title} · ${company}`,
-        text: `Application: ${applicationId}\nPackage: ${plan.title} ($${plan.price})\nCompany: ${company}\nURL: ${url || '—'}\nContact: ${email}\nTelegram: ${telegram || '—'}\nGoal / angle:\n${goal}\n\nSource: ${record.source}\nSubmitted: ${record.createdAt}\n\nReview editorial fit before publication.`
-      })
+        secret: mailSecret,
+        ...record
+      }),
+      signal: AbortSignal.timeout(15000)
     });
-    if (!response.ok) throw new Error(`resend_${response.status}`);
+    if (!response.ok) throw new Error(`google_script_${response.status}`);
+    const result = await response.json();
+    if (result?.ok !== true || result?.applicationId !== applicationId) throw new Error('google_script_rejected');
   } catch (error) {
     console.error('web-lead-email-failed', applicationId, error?.message || error);
     return res.status(502).json({ ok: false, error: 'email_delivery_failed' });

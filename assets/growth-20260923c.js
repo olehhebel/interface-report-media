@@ -138,7 +138,7 @@ function bindAdvertiserForm(form){
       track('advertiser_lead_complete',{package:payload.package});
       form.reset();
     }catch(error){
-      note.textContent=error.message==='email_not_configured'?'Email delivery is being configured. Your request was not sent. Please use the Telegram commercial desk.': 'We could not email your request. Please use the Telegram commercial desk instead.';
+      note.textContent=error.message==='email_not_configured'?'Email delivery is being configured. Your request was not sent. Please contact the commercial desk by Telegram.': 'We could not email your request. Please use the Telegram commercial desk instead.';
       track('advertiser_lead_error',{package:payload.package,error:error.message});
     }finally{button.disabled=false;button.textContent=previous;}
   });
