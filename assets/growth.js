@@ -98,7 +98,7 @@ function advertiserForm(){
   form.className='ir-advertiser-form';
   form.dataset.advertiserIntake='';
   form.innerHTML=`
-    <div class="ir-form-head"><div><span>Commercial intake</span><h3>Send the brief. We review fit before payment.</h3></div><p>No card details here. If accepted, the PayPal payment link follows after editorial review.</p></div>
+    <div class="ir-form-head"><div><span>Commercial intake</span><h3>Tell us about your campaign.</h3></div><p>We review every proposal. After submission, you will see the next payment step.</p></div>
     <div class="ir-form-grid">
       <label><span>Package</span><select name="package" required><option value="sponsored">Sponsored Story · $99</option><option value="feature">Founder / Product Feature · $149</option><option value="distribution">Feature + Distribution · $199</option></select></label>
       <label><span>Company / product</span><input name="company" autocomplete="organization" required maxlength="160" placeholder="Acme AI"></label>
@@ -132,7 +132,9 @@ function bindAdvertiserForm(form){
       const response=await fetch('/api/advertiser-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
       const data=await response.json().catch(()=>({}));
       if(!response.ok)throw new Error(data.error||'submission_failed');
-      note.innerHTML=`Application <strong>${data.applicationId}</strong> received. We review fit first; if accepted, the PayPal payment link follows. For the fastest follow-up, continue in <a href="/api/telegram-link?start=${encodeURIComponent(payload.package)}">Telegram ↗</a>.`;
+      note.textContent=`Application ${data.applicationId} received.`;
+      form.closest('dialog')?.close();
+      showCheckout(data,payload.package);
       track('advertiser_lead_complete',{package:payload.package});
       form.reset();
     }catch(error){
@@ -142,10 +144,39 @@ function bindAdvertiserForm(form){
   });
 }
 
+function showCheckout(data,packageId){
+  const labels={sponsored:'Sponsored Story · from $99',feature:'Founder / Product Feature · from $149',distribution:'Feature + Distribution · from $199'};
+  const dialog=document.createElement('dialog');dialog.className='ir-checkout-dialog';
+  const panel=document.createElement('div');panel.className='ir-checkout-panel';
+  const close=document.createElement('button');close.type='button';close.className='ir-checkout-close';close.setAttribute('aria-label','Close payment step');close.textContent='×';
+  const kicker=document.createElement('div');kicker.className='kicker';kicker.textContent='Application received';
+  const heading=document.createElement('h2');heading.textContent='Next: payment';
+  const summary=document.createElement('p');summary.textContent=`${labels[packageId]||'Commercial package'} · Reference ${data.applicationId}`;
+  const message=document.createElement('p');message.textContent=data.checkoutUrl?`Complete payment securely in UAH (${data.checkoutAmountUAH}). Available card or wallet methods depend on your device.`: 'Your brief is with our commercial desk. Secure checkout is being connected. We will send you a payment link after reviewing your request.';
+  panel.append(close,kicker,heading,summary,message);
+  if(data.checkoutUrl){const pay=document.createElement('a');pay.className='ir-checkout-pay';pay.href=data.checkoutUrl;pay.rel='noopener';pay.textContent='Continue to secure payment ↗';panel.appendChild(pay);}
+  const policy=document.createElement('small');policy.textContent='Publication is subject to editorial review. Payment does not guarantee publication.';panel.appendChild(policy);
+  dialog.appendChild(panel);document.body.appendChild(dialog);dialog.showModal();
+  close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+}
+
 function applyCommerce(){
   loadCommerceStyles();
   ensureFooterNewsletterLink();
   addPreferredSources();
+
+  for(const trigger of document.querySelectorAll('[data-package]')){
+    if(trigger.dataset.irOrderBound==='1')continue;
+    trigger.dataset.irOrderBound='1';
+    trigger.addEventListener('click',event=>{
+      event.preventDefault();
+      const dialog=document.createElement('dialog');dialog.className='ir-order-dialog';
+      const close=document.createElement('button');close.type='button';close.className='ir-order-close';close.textContent='×';close.setAttribute('aria-label','Close order form');
+      const form=advertiserForm();form.querySelector('[name="package"]').value=trigger.dataset.package;
+      dialog.append(close,form);document.body.appendChild(dialog);bindAdvertiserForm(form);dialog.showModal();
+      close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+    });
+  }
 
   if(!document.querySelector('.ir-telegram-fab')){
     const fab=document.createElement('a');
@@ -163,7 +194,7 @@ function applyCommerce(){
       const slug=slugs[index]||'site';
       const actions=document.createElement('div');
       actions.className='ir-price-actions';
-      actions.innerHTML=`<a href="#commercial-intake" data-package="${slug}">Apply ↗</a><a class="ir-secondary" href="/sponsored-content-policy/">Policy</a>`;
+      actions.innerHTML=`<a href="#commercial-intake" data-package="${slug}">Order this package ↗</a><a class="ir-secondary" href="/sponsored-content-policy/">Policy</a>`;
       card.appendChild(actions);
     });
 
@@ -184,9 +215,7 @@ function applyCommerce(){
         const select=form.querySelector('[name="package"]');
         if(select)select.value=requestedPackage;
       }
-      document.querySelectorAll('[data-package]').forEach(link=>link.addEventListener('click',()=>{
-        const select=form.querySelector('[name="package"]');if(select)select.value=link.dataset.package;
-      }));
+      // Buttons in the pricing cards are bound on the next applyCommerce pass.
     }
   }
 }

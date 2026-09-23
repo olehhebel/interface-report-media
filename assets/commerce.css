@@ -13,3 +13,27 @@
 .ir-commerce-strip a{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:13px 18px;border-radius:999px;background:#fff;color:#080A0D!important;text-decoration:none!important;font-size:13px!important;font-weight:700}
 @media(max-width:700px){.ir-telegram-fab{right:14px;bottom:14px;padding:13px 15px}.ir-commerce-strip{grid-template-columns:1fr}.ir-commerce-strip a{width:100%}.ir-price-actions{display:grid;grid-template-columns:1fr}.ir-price-actions a{width:100%}}
 @media(prefers-reduced-motion:reduce){.ir-telegram-fab-dot{animation:none}.ir-telegram-fab,.ir-price-actions a{transition:none}}
+/* Commercial Deck and restored brand */
+.brand{display:inline-flex!important;align-items:center;gap:10px;text-decoration:none!important;white-space:nowrap;font-weight:750;font-size:clamp(15px,1.5vw,21px);letter-spacing:-.045em;color:#080a0d}
+.brand .ir-brand-symbol,.footer-brand .ir-brand-symbol{display:block;width:34px;height:39px;object-fit:cover;object-position:center}
+.footer-brand{display:flex;align-items:center;gap:12px;font-size:23px;line-height:1.1}
+.ir-deck{padding:clamp(64px,9vw,128px) 0;background:#f2f6ff;border-top:1px solid #dae5ff;border-bottom:1px solid #dae5ff}
+.ir-deck-page{min-height:75vh;padding-top:clamp(42px,7vw,92px)}
+.ir-deck-heading{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(230px,.7fr);align-items:end;gap:32px;margin-bottom:38px}
+.ir-deck-heading h1,.ir-deck-heading h2{font-size:clamp(36px,5.2vw,76px);line-height:1.02;letter-spacing:-.055em;margin:12px 0 0;max-width:900px}
+.ir-deck-heading p{font-size:clamp(16px,1.6vw,20px);line-height:1.45;color:#46536b;margin:0}
+.ir-deck-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ir-deck-card{display:flex;flex-direction:column;align-items:flex-start;min-height:380px;padding:clamp(22px,2.6vw,38px);background:#fff;border:1px solid #dce6f5;border-radius:20px;box-shadow:0 18px 45px rgba(20,48,101,.055)}
+.ir-deck-card>span{color:#075bdf;text-transform:uppercase;font-size:12px;font-weight:800;letter-spacing:.08em}
+.ir-deck-card h2,.ir-deck-card h3{font-size:clamp(25px,2.4vw,37px);letter-spacing:-.045em;line-height:1.1;margin:25px 0 10px}
+.ir-deck-card p{font-size:16px;line-height:1.55;color:#586377;margin:0 0 22px}
+.ir-deck-card strong{font-size:27px;margin-top:auto;margin-bottom:16px}
+.ir-deck-card button,.ir-checkout-pay{border:0;border-radius:100px;background:#065dff;color:#fff!important;font:700 14px inherit;padding:14px 20px;cursor:pointer;text-decoration:none!important;display:inline-block;text-align:center}
+.ir-deck-card button:hover,.ir-checkout-pay:hover{background:#0045c9}
+.ir-deck-foot{font-size:14px;color:#586377;margin:24px 0 0}.ir-deck-foot a{color:#065dff}
+.ir-order-dialog,.ir-checkout-dialog{border:0;border-radius:22px;padding:0;box-shadow:0 30px 100px rgba(4,15,47,.24);width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto}
+.ir-order-dialog::backdrop,.ir-checkout-dialog::backdrop{background:rgba(6,13,30,.62)}
+.ir-order-dialog{padding:22px}.ir-order-dialog .ir-advertiser-form{margin:0}
+.ir-checkout-panel{padding:clamp(25px,5vw,50px);position:relative}.ir-checkout-panel h2{font-size:clamp(32px,5vw,52px);margin:12px 0}.ir-checkout-panel p{line-height:1.5;color:#43506b}.ir-checkout-panel small{display:block;margin-top:20px;color:#697286}
+.ir-checkout-close,.ir-order-close{position:absolute;right:16px;top:14px;border:0;background:transparent;font-size:30px;cursor:pointer;color:#243046;line-height:1}
+@media(max-width:800px){.ir-deck-heading{grid-template-columns:1fr}.ir-deck-grid{grid-template-columns:1fr}.ir-deck-card{min-height:0}.ir-deck-card button{width:100%}}

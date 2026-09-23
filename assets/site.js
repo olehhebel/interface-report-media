@@ -1,5 +1,5 @@
-const BRAND_LOGO='/assets/interface-report-logo.png';
-const BRAND_LOGO_ABS='https://interfacereport.com/assets/interface-report-logo.png';
+const BRAND_LOGO='/assets/interface-report-mark.jpg';
+const BRAND_LOGO_ABS='https://interfacereport.com/assets/interface-report-mark.jpg';
 const FAVICON='/assets/favicon.png';
 
 function applyBranding(){
@@ -7,16 +7,14 @@ function applyBranding(){
   if(headerBrand){
     headerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='Interface Report';img.width=1536;img.height=768;
-    img.style.cssText='width:clamp(150px,14vw,210px);height:auto;max-height:56px;object-fit:contain;object-position:left center;display:block';
-    headerBrand.appendChild(img);
+    img.src=BRAND_LOGO;img.alt='';img.width=925;img.height=1055;img.className='ir-brand-symbol';
+    const name=document.createElement('span');name.textContent='Interface Report';headerBrand.append(img,name);
   }
   for(const footerBrand of document.querySelectorAll('.footer-brand')){
     footerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='Interface Report';img.width=1536;img.height=768;
-    img.style.cssText='width:min(280px,100%);height:auto;object-fit:contain;object-position:left center;display:block';
-    footerBrand.appendChild(img);
+    img.src=BRAND_LOGO;img.alt='';img.width=925;img.height=1055;img.className='ir-brand-symbol';
+    const name=document.createElement('span');name.textContent='Interface Report';footerBrand.append(img,name);
   }
   for(const oldIcon of [...document.querySelectorAll('link[rel~="icon"],link[rel="shortcut icon"]')]) oldIcon.remove();
   const icon=document.createElement('link');icon.rel='icon';icon.type='image/png';icon.href=FAVICON;document.head.appendChild(icon);
@@ -28,8 +26,8 @@ function applyBranding(){
         if(Array.isArray(value)){value.forEach(visit);return;}
         const types=Array.isArray(value['@type'])?value['@type']:[value['@type']];
         if(types.includes('Organization')||types.includes('NewsMediaOrganization')){
-          value.logo={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":1536,"height":768};
-          value.image={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":1536,"height":768};
+          value.logo={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":925,"height":1055};
+          value.image={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":925,"height":1055};
         }
         Object.values(value).forEach(visit);
       };

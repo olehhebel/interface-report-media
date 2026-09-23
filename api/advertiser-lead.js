@@ -86,12 +86,38 @@ module.exports = async function handler(req, res) {
           `<b>Email:</b> ${escapeHtml(email)}\n` +
           `<b>Telegram:</b> ${escapeHtml(telegram || '—')}\n` +
           `<b>Goal / angle:</b> ${escapeHtml(goal)}\n\n` +
-          '<i>Review fit before sending any PayPal payment link.</i>'
+          '<i>Review editorial fit. Payment status must be verified with the provider.</i>'
       });
     } catch (error) {
       console.error('web-lead-forward-failed', error?.message || error);
     }
   }
 
-  return res.status(200).json({ ok: true, applicationId });
+  // Prices shown in USD are indicative. The merchant sets explicit UAH totals
+  // in the environment; never calculate a charge from a client-supplied price.
+  const checkoutAmount = Number(process.env[`MONO_PRICE_${packageId.toUpperCase()}_KOP`]);
+  const token = process.env.MONO_ACQUIRING_TOKEN;
+  if (token && Number.isSafeInteger(checkoutAmount) && checkoutAmount > 0) {
+    try {
+      const payment = await fetch('https://api.monobank.ua/api/merchant/invoice/create', {
+        method: 'POST',
+        headers: { 'X-Token': token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: checkoutAmount,
+          ccy: 980,
+          merchantPaymInfo: { reference: applicationId, destination: `Interface Report · ${plan.title}` },
+          redirectUrl: `https://interfacereport.com/commercial-deck/?payment=returned&ref=${encodeURIComponent(applicationId)}`
+        })
+      });
+      if (!payment.ok) throw new Error(`invoice_create_${payment.status}`);
+      const invoice = await payment.json();
+      const checkoutUrl = new URL(invoice.pageUrl);
+      if (checkoutUrl.protocol !== 'https:' || !checkoutUrl.hostname.endsWith('.monobank.ua')) throw new Error('unexpected_checkout_host');
+      console.log('IR_CHECKOUT_CREATED', JSON.stringify({ applicationId, invoiceId: invoice.invoiceId, amount: checkoutAmount, ccy: 980 }));
+      return res.status(200).json({ ok: true, applicationId, checkoutUrl: checkoutUrl.toString(), checkoutAmountUAH: (checkoutAmount / 100).toFixed(2) });
+    } catch (error) {
+      console.error('checkout_create_failed', error?.message || error);
+    }
+  }
+  return res.status(200).json({ ok: true, applicationId, checkoutPending: true });
 };
