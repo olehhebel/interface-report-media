@@ -20,6 +20,16 @@ This file documents the runtime configuration required by the Growth & Monetizat
 - `TELEGRAM_WEBHOOK_SECRET`
 - `TELEGRAM_LEADS_CHAT_ID`
 
+The website's sponsored-story form emails each accepted application to
+`drgebel@gmail.com` before presenting the payment step. Configure
+`RESEND_API_KEY` for this Vercel project and verify `interfacereport.com` as a
+sending domain with Resend. The default sender is
+`Interface Report <leads@interfacereport.com>`; set `IR_LEADS_FROM` only if
+another verified sender is required. The applicant's email is set as Reply-To.
+If the key is missing or the provider rejects the message, the form reports
+an error and does not claim that the application was received. Telegram is a
+secondary copy after successful email delivery.
+
 The leads chat receives new Telegram and web commercial applications. Telegram applications expose admin **Approve → PayPal** and **Decline** actions. A PayPal link is not shown to the applicant before approval.
 
 ## PayPal environment variables
