@@ -17,10 +17,33 @@ for(const f of document.querySelectorAll('[data-newsletter]')){
   const email=f.querySelector('input[type=email]');
   const button=f.querySelector('button[type=submit]');
   const note=f.parentElement.querySelector('.form-note')||f.querySelector('.form-note');
+  const label=button?.textContent;
   if(email)email.disabled=true;
-  if(button){button.disabled=true;button.textContent='Subscriptions paused';}
-  if(note)note.textContent='Subscriptions are temporarily paused while we set up a verified email workflow. No address is collected.';
-  f.addEventListener('submit',event=>event.preventDefault());
+  if(button){button.disabled=true;button.textContent='Checking availability…';}
+  if(note)note.textContent='Checking subscription availability…';
+  fetch('/api/newsletter',{cache:'no-store'}).then(response=>response.json()).then(data=>{
+    if(!data.available)throw new Error('unavailable');
+    if(email)email.disabled=false;
+    if(button){button.disabled=false;button.textContent=label;}
+    if(note)note.textContent='Weekly editorial updates. Confirm by email; unsubscribe any time.';
+  }).catch(()=>{
+    if(button)button.textContent='Subscriptions paused';
+    if(note)note.textContent='Subscriptions are temporarily paused. No address is collected.';
+  });
+  f.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(button?.disabled||!f.checkValidity()){f.reportValidity();return;}
+    button.disabled=true;button.textContent='Sending…';
+    try{
+      const response=await fetch('/api/newsletter',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email.value,source:f.dataset.source||location.pathname,company_website:f.querySelector('[name="company_website"]')?.value||''})});
+      const data=await response.json();
+      if(!response.ok||!data.ok)throw new Error('unavailable');
+      if(note)note.textContent='Check your inbox and confirm your subscription. You are not subscribed yet.';
+      f.reset();
+    }catch(_){
+      if(note)note.textContent='Subscription could not be sent. Please try again later.';
+    }finally{button.disabled=false;button.textContent=label;}
+  });
 }
 
 function loadCommerceStyles(){
