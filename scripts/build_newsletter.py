@@ -2,9 +2,9 @@
 """Build a six-story Interface Report newsletter from the live RSS feed.
 
 Preview: python3 scripts/build_newsletter.py --output newsletter-draft.html
-After a confirmed beehiiv send: python3 scripts/build_newsletter.py --mark-sent
+After a confirmed send: python3 scripts/build_newsletter.py --mark-sent
 Commit the resulting newsletter-history.json only after the send is confirmed.
-Never send from this script; beehiiv owns consent, suppression and unsubscribe.
+Never send from this script; subscriber consent and unsubscribe must be verified separately.
 """
 
 import argparse
@@ -77,7 +77,7 @@ def render(selected, issue):
 
 
 def render_editor_copy(selected, issue):
-    """Editable content for beehiiv Launch, whose newsletter editor excludes custom HTML."""
+    """Editable content for a manually composed email."""
     lines = [f"Interface Report · Issue {issue:03d}", "", "Six useful signals for what comes next.", "",
              "A concise selection from Interface Report: AI products, agents and design decisions worth examining. Older stories are included when they remain useful; dates appear on every card.", ""]
     for item in selected:
@@ -94,7 +94,7 @@ def main():
     parser.add_argument("--history", type=Path, default=DEFAULT_HISTORY)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--output", type=Path, default=Path("newsletter-draft.html"))
-    parser.add_argument("--editor-copy", type=Path, default=Path("newsletter-editor-copy.txt"), help="Editable text for the free beehiiv editor")
+    parser.add_argument("--editor-copy", type=Path, default=Path("newsletter-editor-copy.txt"), help="Editable text for a manually composed email")
     parser.add_argument("--mark-sent", action="store_true", help="Record a manifest only after confirmed delivery")
     args = parser.parse_args()
     history = load_history(args.history)
@@ -114,7 +114,7 @@ def main():
     args.output.write_text(render(chosen, issue), encoding="utf-8")
     args.editor_copy.write_text(render_editor_copy(chosen, issue), encoding="utf-8")
     args.manifest.write_text(json.dumps({"issue": issue, "urls": [row["url"] for row in chosen]}, indent=2) + "\n", encoding="utf-8")
-    print(f"Draft issue {issue:03d}: {len(chosen)} distinct articles. Preview {args.output}. Mark sent only after beehiiv confirms the send.")
+    print(f"Draft issue {issue:03d}: {len(chosen)} distinct articles. Preview {args.output}. Mark sent only after delivery is confirmed.")
 
 
 if __name__ == "__main__":
