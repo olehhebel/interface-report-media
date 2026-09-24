@@ -14,45 +14,13 @@ function addHoneypot(form){
 }
 
 for(const f of document.querySelectorAll('[data-newsletter]')){
-  addHoneypot(f);
-  f.addEventListener('submit',async e=>{
-    e.preventDefault();
-    const email=f.querySelector('input[type=email]');
-    const note=f.parentElement.querySelector('.form-note')||f.querySelector('.form-note');
-    const button=f.querySelector('button[type=submit]');
-    if(!email||!email.checkValidity()){email?.reportValidity();return;}
-    track('newsletter_signup_start',{source:f.dataset.source||location.pathname});
-    const previous=button?.textContent;
-    if(button){button.disabled=true;button.textContent='Joining…';}
-    if(note)note.textContent='';
-    try{
-      const params=new URLSearchParams(location.search);
-      const response=await fetch('/api/newsletter',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({
-          email:email.value,
-          company_website:f.querySelector('[name="company_website"]')?.value||'',
-          source:f.dataset.source||location.pathname,
-          utm_source:params.get('utm_source')||'interfacereport.com',
-          utm_medium:params.get('utm_medium')||'website',
-          utm_campaign:params.get('utm_campaign')||'newsletter_signup',
-          utm_content:params.get('utm_content')||f.dataset.source||location.pathname,
-          referring_site:document.referrer||location.href
-        })
-      });
-      const data=await response.json().catch(()=>({}));
-      if(!response.ok)throw new Error(data.error||'signup_failed');
-      if(note)note.textContent='Check your inbox to confirm your subscription.';
-      email.value='';
-      track('newsletter_signup_complete',{source:f.dataset.source||location.pathname});
-    }catch(error){
-      if(note)note.textContent=error.message==='newsletter_not_configured'?'Newsletter signup is being connected. Please use the Newsletter page again shortly.':'We could not add you right now. Please try again.';
-      track('newsletter_signup_error',{source:f.dataset.source||location.pathname,error:error.message});
-    }finally{
-      if(button){button.disabled=false;button.textContent=previous||'Subscribe';}
-    }
-  });
+  const email=f.querySelector('input[type=email]');
+  const button=f.querySelector('button[type=submit]');
+  const note=f.parentElement.querySelector('.form-note')||f.querySelector('.form-note');
+  if(email)email.disabled=true;
+  if(button){button.disabled=true;button.textContent='Subscriptions paused';}
+  if(note)note.textContent='Subscriptions are temporarily paused while we set up a verified email workflow. No address is collected.';
+  f.addEventListener('submit',event=>event.preventDefault());
 }
 
 function loadCommerceStyles(){
