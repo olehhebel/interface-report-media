@@ -93,9 +93,11 @@ module.exports = async function handler(req, res) {
       }),
       signal: AbortSignal.timeout(15000)
     });
-    if (!response.ok) throw new Error(`google_script_${response.status}`);
-    const result = await response.json();
-    if (result?.ok !== true || result?.applicationId !== applicationId) throw new Error('google_script_rejected');
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(`google_script_${response.status}_${String(result?.error || 'http_error').slice(0, 80)}`);
+    if (result?.ok !== true || result?.applicationId !== applicationId) {
+      throw new Error(`google_script_rejected_${String(result?.error || 'invalid_response').slice(0, 80)}`);
+    }
   } catch (error) {
     console.error('web-lead-email-failed', applicationId, error?.message || error);
     return res.status(502).json({ ok: false, error: 'email_delivery_failed' });
