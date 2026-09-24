@@ -76,12 +76,25 @@ def render(selected, issue):
 <body style="margin:0;background:#f4f7fc;color:#162b4c;font-family:Arial,Helvetica,sans-serif;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fc;"><tr><td align="center" style="padding:22px 10px;"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border:1px solid #e5eaf4;"><tr><td style="padding:30px 32px 12px;"><a href="{SITE}/" style="text-decoration:none;color:#0b214b;"><img src="{SITE}/assets/interface-report-mark.jpg" width="48" alt="" style="vertical-align:middle;border:0;margin-right:12px;"><strong style="font:700 22px Arial;vertical-align:middle;">Interface Report</strong></a></td></tr><tr><td style="padding:20px 32px 10px;"><span style="color:#1164ee;font:700 11px Arial;letter-spacing:2px;">SIGNAL OVER NOISE · ISSUE {issue:03d}</span><h1 style="margin:12px 0;color:#0b214b;font:700 34px/1.12 Arial;">Six useful signals for what comes next.</h1><p style="font:16px/1.55 Arial;color:#46546c;">A concise selection from Interface Report: AI products, agents and design decisions worth examining. Older stories are included when they remain useful; dates appear on every card.</p></td></tr><tr><td style="padding:2px 20px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">{''.join(rows)}</table></td></tr><tr><td style="padding:24px 32px 30px;background:#f5f8ff;border-top:1px solid #dce5f3;"><span style="font:700 11px Arial;color:#1164ee;letter-spacing:2px;">PARTNER NOTE</span><h2 style="font:700 25px/1.2 Arial;color:#0b214b;">Building something worth understanding?</h2><p style="font:15px/1.55 Arial;color:#46546c;">If you are launching an AI product or rethinking an interface, tell us what changed and why it matters. Interface Report reviews proposals for clearly labeled sponsored stories and founder features. Payment does not guarantee publication or a positive conclusion.</p><a href="{SITE}/commercial-deck/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=issue_{issue:03d}" style="display:inline-block;background:#1065f6;color:#fff;padding:16px 24px;border-radius:10px;text-decoration:none;font:700 16px Arial;">Explore the Commercial Deck ↗</a></td></tr><tr><td style="padding:20px 32px;color:#64748b;font:12px/1.5 Arial;">Oleh Hebel · Interface Report<br><a href="{SITE}/" style="color:#1164ee;">interfacereport.com</a> · <a href="https://www.linkedin.com/in/olehhebel/" style="color:#1164ee;">LinkedIn</a><br>Sent only to confirmed subscribers. The sending platform adds its required unsubscribe link and mailing footer.</td></tr></table></td></tr></table></body></html>'''
 
 
+def render_editor_copy(selected, issue):
+    """Editable content for beehiiv Launch, whose newsletter editor excludes custom HTML."""
+    lines = [f"Interface Report · Issue {issue:03d}", "", "Six useful signals for what comes next.", "",
+             "A concise selection from Interface Report: AI products, agents and design decisions worth examining. Older stories are included when they remain useful; dates appear on every card.", ""]
+    for item in selected:
+        date = parsedate_to_datetime(item["date"]).strftime("%b %-d, %Y")
+        link = item["url"] + f"?utm_source=newsletter&utm_medium=email&utm_campaign=issue_{issue:03d}"
+        lines.extend([item["title"], date, item["description"], "Read the story ↗ " + link, ""])
+    lines.extend(["PARTNER NOTE", "Building something worth understanding?", "If you are launching an AI product or rethinking an interface, tell us what changed and why it matters. Interface Report reviews proposals for clearly labeled sponsored stories and founder features. Payment does not guarantee publication or a positive conclusion.", "Explore the Commercial Deck ↗ " + SITE + f"/commercial-deck/?utm_source=newsletter&utm_medium=email&utm_campaign=issue_{issue:03d}", "", "Oleh Hebel · Interface Report", SITE + "/", "https://www.linkedin.com/in/olehhebel/", "", "Add the platform's required unsubscribe link and mailing footer before sending."])
+    return "\n".join(lines) + "\n"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--feed", default=FEED, help="RSS URL or local fixture")
     parser.add_argument("--history", type=Path, default=DEFAULT_HISTORY)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--output", type=Path, default=Path("newsletter-draft.html"))
+    parser.add_argument("--editor-copy", type=Path, default=Path("newsletter-editor-copy.txt"), help="Editable text for the free beehiiv editor")
     parser.add_argument("--mark-sent", action="store_true", help="Record a manifest only after confirmed delivery")
     args = parser.parse_args()
     history = load_history(args.history)
@@ -99,6 +112,7 @@ def main():
     chosen = select_six(stories(source), history)
     issue = max([int(row.get("issue", 0)) for row in history], default=0) + 1
     args.output.write_text(render(chosen, issue), encoding="utf-8")
+    args.editor_copy.write_text(render_editor_copy(chosen, issue), encoding="utf-8")
     args.manifest.write_text(json.dumps({"issue": issue, "urls": [row["url"] for row in chosen]}, indent=2) + "\n", encoding="utf-8")
     print(f"Draft issue {issue:03d}: {len(chosen)} distinct articles. Preview {args.output}. Mark sent only after beehiiv confirms the send.")
 
