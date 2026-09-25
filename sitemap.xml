@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-12</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/about/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/commercial-deck/</loc><lastmod>2026-09-23</lastmod></url>
   <url><loc>https://interfacereport.com/advertise/</loc><lastmod>2026-09-12</lastmod></url>
@@ -49,4 +49,14 @@
   <url><loc>https://interfacereport.com/analysis/multi-brand-design-system-architecture/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/shopify-polaris-cross-surface-design-system/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/decagon-deco-ai-design-system-handoff/</loc><lastmod>2026-09-23</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/oleh-hebel-three-brand-product-system/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/coinbase-code-connect-agent-design-system/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/microsoft-ai-work-system-costs/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/zendesk-specialized-agents-service-design/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/uipath-cartographer-map-of-work/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/rabbit-os3-agent-operating-system/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/persistent-agent-interface-identity-routines/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/trust.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/atlassian-governed-agent-loops-sdlc/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/figma-prototype-to-product-decision/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/analysis/salesforce-agent-script-deterministic-control/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
 </urlset>
