@@ -3,6 +3,7 @@ const LEADS_CHAT_ID = process.env.TELEGRAM_LEADS_CHAT_ID || '';
 
 const PACKAGES = {
   sponsored: { title: 'Sponsored Story', price: 99 },
+  'launch-monthly': { title: 'Launch Offer · Monthly Sponsored Story', price: 9.99 },
   feature: { title: 'Founder / Product Feature', price: 149 },
   distribution: { title: 'Feature + Distribution', price: 199 }
 };
@@ -44,7 +45,7 @@ module.exports = async function handler(req, res) {
 
   const packageId = clean(body.package, 40);
   const plan = PACKAGES[packageId];
-  const company = clean(body.company, 160);
+  const company = clean(body.company || (packageId === 'launch-monthly' ? body.goal : ''), 160);
   const url = clean(body.url, 300);
   const goal = clean(body.goal, 1200);
   const email = clean(body.email, 254).toLowerCase();
@@ -58,14 +59,16 @@ module.exports = async function handler(req, res) {
   const applicationId = `IR-WEB-${Date.now().toString(36).toUpperCase()}-${require('node:crypto').randomBytes(4).toString('hex').toUpperCase()}`;
   const record = {
     applicationId,
-    package: packageId,
+    // The existing Apps Script understands the sponsored package. The offer
+    // is identified by source and price without requiring a script redeploy.
+    package: packageId === 'launch-monthly' ? 'sponsored' : packageId,
     price: plan.price,
     company,
     url,
     goal,
     email,
     telegram,
-    source: clean(body.source || 'advertise-page', 80),
+    source: packageId === 'launch-monthly' ? 'homepage-launch-monthly-9.99' : clean(body.source || 'advertise-page', 80),
     createdAt: new Date().toISOString()
   };
 
@@ -123,6 +126,12 @@ module.exports = async function handler(req, res) {
     } catch (error) {
       console.error('web-lead-forward-failed', error?.message || error);
     }
+  }
+
+  // The launch offer is an application, not an automatically billed
+  // subscription. Confirm editorial fit and payment terms by email first.
+  if (packageId === 'launch-monthly') {
+    return res.status(200).json({ ok: true, applicationId, reviewPending: true });
   }
 
   // Prices shown in USD are indicative. The merchant sets explicit UAH totals

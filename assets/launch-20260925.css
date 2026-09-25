@@ -1,0 +1,22 @@
+.launch-hero{max-width:740px;margin-top:32px;padding:26px 28px;border:1px solid #d8e3f4;border-radius:20px;background:#f2f6ff}
+.launch-hero>span,.launch-ribbon span{display:block;font-size:11px;letter-spacing:.12em;font-weight:800}
+.launch-hero>span{color:#065dff}
+.launch-hero p{font-size:clamp(20px,2.25vw,29px);line-height:1.15;letter-spacing:-.025em;margin:12px 0 0;max-width:620px}
+.launch-hero strong{color:#065dff;white-space:nowrap}
+.launch-hero .hero-order{margin-top:20px;min-height:60px;padding:14px 21px;font-size:17px}
+.launch-hero small{display:block;color:#586377;font-size:12px;margin-top:12px}
+.launch-ribbon{padding:24px 0}
+.launch-ribbon-blue{background:#065dff;color:#fff}
+.launch-ribbon-dark{background:#080a0d;color:#fff}
+.launch-ribbon-inner{display:flex;align-items:center;justify-content:space-between;gap:28px}
+.launch-ribbon strong{display:block;font-size:clamp(20px,2.25vw,31px);font-weight:600;line-height:1.16;letter-spacing:-.03em;margin:7px 0}
+.launch-ribbon small{display:block;color:rgba(255,255,255,.78);line-height:1.45;font-size:13px}
+.launch-ribbon a{display:inline-flex;align-items:center;justify-content:center;text-align:center;flex-shrink:0;min-height:48px;padding:12px 20px;border-radius:999px;background:#fff;color:#080a0d;font-size:14px;font-weight:700;text-decoration:none}
+.launch-ribbon a:hover{background:#e9f0ff}
+.launch-ribbon a:focus-visible,.launch-hero a:focus-visible{outline:3px solid #080a0d;outline-offset:3px}
+.launch-ribbon-dark a:focus-visible{outline-color:#fff}
+.ir-launch-form .ir-form-head{grid-template-columns:1fr 1fr}
+.ir-launch-form .ir-form-head span{font-size:12px;color:#065dff;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.ir-launch-form .ir-form-head p{font-size:15px;line-height:1.5;margin:0;color:#46536b}
+.ir-launch-form .ir-launch-terms{margin:18px 0 0;font-size:13px;line-height:1.5;color:#586377}
+@media(max-width:700px){.launch-hero{padding:20px}.launch-hero .hero-order{width:100%;font-size:16px;gap:12px}.launch-ribbon-inner{align-items:stretch;flex-direction:column;gap:18px}.launch-ribbon a{width:100%}.ir-launch-form .ir-form-head{grid-template-columns:1fr}}

@@ -44,6 +44,6 @@ setTimeout(applyBranding,250);
 const menu=document.querySelector('.menu');const nav=document.querySelector('.nav');
 if(menu&&nav){menu.addEventListener('click',()=>{const open=nav.dataset.open==='1';nav.dataset.open=open?'0':'1';nav.style.display=open?'none':'flex';nav.style.position='absolute';nav.style.top='66px';nav.style.left='0';nav.style.right='0';nav.style.padding='20px';nav.style.flexDirection='column';nav.style.background='#F6F6F2';nav.style.borderBottom='1px solid rgba(8,10,13,.14)';menu.setAttribute('aria-expanded',String(!open));});}
 
-if(!document.querySelector('script[src="/assets/growth-20260923b.js"]')){
-  const growth=document.createElement('script');growth.src='/assets/growth-20260923b.js';growth.async=false;document.head.appendChild(growth);
+if(!document.querySelector('script[src="/assets/growth-20260925.js"]')){
+  const growth=document.createElement('script');growth.src='/assets/growth-20260925.js';growth.async=false;document.head.appendChild(growth);
 }

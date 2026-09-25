@@ -1,0 +1,244 @@
+function track(name,params={}){
+  try{
+    if(typeof window.gtag==='function')window.gtag('event',name,params);
+    else if(Array.isArray(window.dataLayer))window.dataLayer.push({event:name,...params});
+  }catch(_){/* Analytics must never block UX. */}
+}
+
+function addHoneypot(form){
+  if(form.querySelector('[name="company_website"]'))return;
+  const wrap=document.createElement('div');
+  wrap.className='ir-honeypot';wrap.setAttribute('aria-hidden','true');
+  wrap.innerHTML='<label>Company website<input name="company_website" tabindex="-1" autocomplete="off"></label>';
+  form.appendChild(wrap);
+}
+
+for(const f of document.querySelectorAll('[data-newsletter]')){
+  const email=f.querySelector('input[type=email]');
+  const button=f.querySelector('button[type=submit]');
+  const note=f.parentElement.querySelector('.form-note')||f.querySelector('.form-note');
+  const label=button?.textContent;
+  if(email)email.disabled=true;
+  if(button){button.disabled=true;button.textContent='Checking availability…';}
+  if(note)note.textContent='Checking subscription availability…';
+  fetch('/api/newsletter',{cache:'no-store'}).then(response=>response.json()).then(data=>{
+    if(!data.available)throw new Error('unavailable');
+    if(email)email.disabled=false;
+    if(button){button.disabled=false;button.textContent=label;}
+    if(note)note.textContent='Weekly editorial updates. Confirm by email; unsubscribe any time.';
+  }).catch(()=>{
+    if(button)button.textContent='Subscriptions paused';
+    if(note)note.textContent='Subscriptions are temporarily paused. No address is collected.';
+  });
+  f.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(button?.disabled||!f.checkValidity()){f.reportValidity();return;}
+    button.disabled=true;button.textContent='Sending…';
+    try{
+      const response=await fetch('/api/newsletter',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email.value,source:f.dataset.source||location.pathname,company_website:f.querySelector('[name="company_website"]')?.value||''})});
+      const data=await response.json();
+      if(!response.ok||!data.ok)throw new Error('unavailable');
+      if(note)note.textContent='Check your inbox and confirm your subscription. You are not subscribed yet.';
+      f.reset();
+    }catch(_){
+      if(note)note.textContent='Subscription could not be sent. Please try again later.';
+    }finally{button.disabled=false;button.textContent=label;}
+  });
+}
+
+function loadCommerceStyles(){
+  for(const href of ['/assets/commerce-20260923b.css','/assets/growth.css']){
+    if(document.querySelector(`link[href="${href}"]`))continue;
+    const link=document.createElement('link');link.rel='stylesheet';link.href=href;document.head.appendChild(link);
+  }
+}
+
+function addPreferredSources(){
+  const path=location.pathname;
+  const eligible=path==='/'||path.startsWith('/analysis/')||path.startsWith('/topics/')||path.startsWith('/latest');
+  if(!eligible||document.querySelector('.ir-preferred-source'))return;
+  loadCommerceStyles();
+  const section=document.createElement('section');
+  section.className='ir-preferred-source';
+  section.innerHTML='<div class="wrap ir-preferred-source-inner"><div><div class="kicker">Google Preferred Sources</div><h2>Want more Interface Report in Search?</h2><p>Add Interface Report as a preferred source. Google may highlight our reporting for you in Top Stories, AI Mode and AI Overviews where those features are available.</p></div><div class="ir-preferred-source-action"><div google-add-preferred-source-btn data-theme="light" data-lang="en"></div><a href="https://www.google.com/preferences/source?q=interfacereport.com" rel="noopener" target="_blank">Open source preferences ↗</a></div></div></section>';
+  const footer=document.querySelector('.footer');
+  if(footer)footer.insertAdjacentElement('beforebegin',section);
+  if(!document.querySelector('script[src="https://news.google.com/swg/js/v1/publisher.js"]')){
+    const script=document.createElement('script');
+    script.async=true;script.src='https://news.google.com/swg/js/v1/publisher.js';
+    document.head.appendChild(script);
+  }
+}
+
+function ensureFooterNewsletterLink(){
+  const footer=document.querySelector('.footer');
+  if(!footer)return;
+  const columns=[...footer.querySelectorAll('.footer-grid>div')];
+  const publication=columns.find(col=>col.querySelector('h4')?.textContent.trim()==='Publication');
+  if(publication&&!publication.querySelector('a[href="/newsletter/"]')){
+    const link=document.createElement('a');link.href='/newsletter/';link.textContent='Newsletter';publication.appendChild(link);
+  }
+  const standards=columns.find(col=>col.querySelector('h4')?.textContent.trim()==='Standards');
+  if(standards&&!standards.querySelector('a[href="/advertising-policy/"]')){
+    const link=document.createElement('a');link.href='/advertising-policy/';link.textContent='Advertising Policy';standards.appendChild(link);
+  }
+}
+
+function advertiserForm(packageId='sponsored'){
+  const form=document.createElement('form');
+  form.className='ir-advertiser-form';
+  form.dataset.advertiserIntake='';
+  if(packageId==='launch-monthly'){
+    form.classList.add('ir-launch-form');
+    form.innerHTML=`
+      <div class="ir-form-head"><div><span>Limited launch offer · $9.99/month</span><h3>Tell us about your project.</h3></div><p>One sponsored story per paid month, with a 30-day homepage spotlight after approval. Applying is free.</p></div>
+      <input type="hidden" name="package" value="launch-monthly">
+      <div class="ir-form-grid">
+        <label class="ir-form-wide"><span>About your project</span><textarea name="goal" required minlength="8" maxlength="1200" rows="5" placeholder="What are you building, and why should our readers care?"></textarea></label>
+        <label class="ir-form-wide"><span>Your email</span><input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com"></label>
+      </div>
+      <p class="ir-launch-terms">No payment now. We review editorial fit and agree on the story before payment. Approved stories are clearly labeled Sponsored; search rankings are never guaranteed. No automatic renewal is set up.</p>
+      <div class="ir-form-actions"><button type="submit">Send project for review ↗</button></div>
+      <div class="ir-form-note" role="status" aria-live="polite"></div>`;
+    addHoneypot(form);
+    return form;
+  }
+  form.innerHTML=`
+    <div class="ir-form-head"><div><span>Commercial intake</span><h3>Tell us about your campaign.</h3></div><p>We review every proposal. After submission, you will see the next payment step.</p></div>
+    <div class="ir-form-grid">
+      <label><span>Package</span><select name="package" required><option value="sponsored">Sponsored Story · $99</option><option value="feature">Founder / Product Feature · $149</option><option value="distribution">Feature + Distribution · $199</option></select></label>
+      <label><span>Company / product</span><input name="company" autocomplete="organization" required maxlength="160" placeholder="Acme AI"></label>
+      <label class="ir-form-wide"><span>Product URL</span><input name="url" type="url" autocomplete="url" maxlength="300" placeholder="https://example.com"></label>
+      <label class="ir-form-wide"><span>Campaign goal / proposed angle</span><textarea name="goal" required maxlength="1200" rows="5" placeholder="What are you launching, who is it for, and what should readers understand?"></textarea></label>
+      <label><span>Contact email</span><input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com"></label>
+      <label><span>Telegram (optional)</span><input name="telegram" maxlength="80" placeholder="@username"></label>
+    </div>
+    <label class="ir-consent"><input type="checkbox" name="consent" required><span>I understand that submission and payment do not guarantee publication or a positive editorial conclusion.</span></label>
+    <div class="ir-form-actions"><button type="submit">Submit for editorial review ↗</button><a href="/api/telegram-link?start=site">Prefer Telegram? Open the commercial desk ↗</a></div>
+    <div class="ir-form-note" role="status" aria-live="polite"></div>`;
+  addHoneypot(form);
+  return form;
+}
+
+function bindAdvertiserForm(form){
+  if(form.dataset.bound==='1')return;form.dataset.bound='1';
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!form.checkValidity()){form.reportValidity();return;}
+    const button=form.querySelector('button[type=submit]');
+    const note=form.querySelector('.ir-form-note');
+    const previous=button.textContent;
+    button.disabled=true;button.textContent='Submitting…';note.textContent='';
+    const fd=new FormData(form);
+    const payload=Object.fromEntries(fd.entries());
+    const launchOffer=payload.package==='launch-monthly';
+    payload.consent=launchOffer||fd.get('consent')==='on';
+    payload.source=launchOffer?'homepage-launch-monthly-9.99':'advertise-page';
+    track('advertiser_lead_start',{package:payload.package});
+    try{
+      const response=await fetch('/api/advertiser-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(data.error||'submission_failed');
+      note.textContent=`Application ${data.applicationId} received.`;
+      form.closest('dialog')?.close();
+      if(launchOffer)showLaunchConfirmation(data);
+      else showCheckout(data,payload.package);
+      track('advertiser_lead_complete',{package:payload.package});
+      form.reset();
+    }catch(error){
+      note.textContent=error.message==='email_not_configured'?'Email delivery is being configured. Your request was not sent. Please use the Telegram commercial desk.': 'We could not email your request. Please use the Telegram commercial desk instead.';
+      track('advertiser_lead_error',{package:payload.package,error:error.message});
+    }finally{button.disabled=false;button.textContent=previous;}
+  });
+}
+
+function showLaunchConfirmation(data){
+  const dialog=document.createElement('dialog');dialog.className='ir-checkout-dialog';
+  dialog.innerHTML='<div class="ir-checkout-panel"><button type="button" class="ir-checkout-close" aria-label="Close confirmation">×</button><div class="kicker">Project sent</div><h2>Thank you. We’ll be in touch.</h2><p>Your project is with the Interface Report team. We’ll review editorial fit, discuss the best angle and prepare the story for search visibility. If it’s a match, we’ll email you about the $9.99/month offer and payment details.</p><small>Application reference: <span></span>. No charge or subscription has been started.</small></div>';
+  dialog.querySelector('small span').textContent=data.applicationId;
+  document.body.appendChild(dialog);dialog.showModal();
+  dialog.querySelector('button').addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
+  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+}
+
+function showCheckout(data,packageId){
+  const labels={sponsored:'Sponsored Story · from $99',feature:'Founder / Product Feature · from $149',distribution:'Feature + Distribution · from $199'};
+  const dialog=document.createElement('dialog');dialog.className='ir-checkout-dialog';
+  const panel=document.createElement('div');panel.className='ir-checkout-panel';
+  const close=document.createElement('button');close.type='button';close.className='ir-checkout-close';close.setAttribute('aria-label','Close payment step');close.textContent='×';
+  const kicker=document.createElement('div');kicker.className='kicker';kicker.textContent='Application received';
+  const heading=document.createElement('h2');heading.textContent='Next: payment';
+  const summary=document.createElement('p');summary.textContent=`${labels[packageId]||'Commercial package'} · Reference ${data.applicationId}`;
+  const message=document.createElement('p');message.textContent=data.checkoutUrl?`Complete payment securely in UAH (${data.checkoutAmountUAH}). Available card or wallet methods depend on your device.`: 'Your brief is with our commercial desk. Secure checkout is being connected. We will send you a payment link after reviewing your request.';
+  panel.append(close,kicker,heading,summary,message);
+  if(data.checkoutUrl){const pay=document.createElement('a');pay.className='ir-checkout-pay';pay.href=data.checkoutUrl;pay.rel='noopener';pay.textContent='Continue to secure payment ↗';panel.appendChild(pay);}
+  const policy=document.createElement('small');policy.textContent='Publication is subject to editorial review. Payment does not guarantee publication.';panel.appendChild(policy);
+  dialog.appendChild(panel);document.body.appendChild(dialog);dialog.showModal();
+  close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+}
+
+function applyCommerce(){
+  loadCommerceStyles();
+  ensureFooterNewsletterLink();
+  addPreferredSources();
+
+  for(const trigger of document.querySelectorAll('[data-package]')){
+    if(trigger.dataset.irOrderBound==='1')continue;
+    trigger.dataset.irOrderBound='1';
+    trigger.addEventListener('click',event=>{
+      event.preventDefault();
+      const dialog=document.createElement('dialog');dialog.className='ir-order-dialog';
+      const close=document.createElement('button');close.type='button';close.className='ir-order-close';close.textContent='×';close.setAttribute('aria-label','Close order form');
+      const form=advertiserForm(trigger.dataset.package);
+      form.querySelector('[name="package"]').value=trigger.dataset.package;
+      dialog.append(close,form);document.body.appendChild(dialog);bindAdvertiserForm(form);dialog.showModal();
+      close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+    });
+  }
+
+  if(!document.querySelector('.ir-telegram-fab')){
+    const fab=document.createElement('a');
+    fab.className='ir-telegram-fab';
+    fab.href='/commercial-deck/';
+    fab.setAttribute('aria-label','Open the Interface Report Commercial Deck');
+    fab.innerHTML='<span class="ir-telegram-fab-dot" aria-hidden="true"></span><span>Commercial Deck ↗</span>';
+    document.body.appendChild(fab);
+  }
+
+  if(location.pathname.replace(/\/+$/,'/')==='/advertise/'){
+    const slugs=['sponsored','feature','distribution'];
+    document.querySelectorAll('.price').forEach((card,index)=>{
+      if(card.querySelector('.ir-price-actions'))return;
+      const slug=slugs[index]||'site';
+      const actions=document.createElement('div');
+      actions.className='ir-price-actions';
+      actions.innerHTML=`<a href="#commercial-intake" data-package="${slug}">Order this package ↗</a><a class="ir-secondary" href="/sponsored-content-policy/">Policy</a>`;
+      card.appendChild(actions);
+    });
+
+    const prose=document.querySelector('.prose');
+    if(prose&&!prose.querySelector('.ir-commerce-strip')){
+      const strip=document.createElement('div');
+      strip.className='ir-commerce-strip';
+      strip.innerHTML='<div><strong>Review first. Pay second.</strong><p>Send one short brief. We check editorial fit and evidence. Accepted applications receive the PayPal payment link.</p></div><a href="#commercial-intake">Start application ↗</a>';
+      const firstH2=prose.querySelector('h2');
+      if(firstH2)firstH2.insertAdjacentElement('afterend',strip);else prose.prepend(strip);
+    }
+    if(prose&&!document.querySelector('[data-advertiser-intake]')){
+      const anchor=document.createElement('div');anchor.id='commercial-intake';anchor.className='ir-form-anchor';
+      const form=advertiserForm();
+      anchor.appendChild(form);prose.appendChild(anchor);bindAdvertiserForm(form);
+      const requestedPackage=new URLSearchParams(location.search).get('package');
+      if(slugs.includes(requestedPackage)){
+        const select=form.querySelector('[name="package"]');
+        if(select)select.value=requestedPackage;
+      }
+      // Buttons in the pricing cards are bound on the next applyCommerce pass.
+    }
+  }
+}
+
+applyCommerce();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyCommerce,{once:true});
+window.addEventListener('load',applyCommerce,{once:true});
