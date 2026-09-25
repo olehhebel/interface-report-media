@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
 
   const packageId = clean(body.package, 40);
   const plan = PACKAGES[packageId];
-  const company = clean(body.company || (packageId === 'launch-monthly' ? body.goal : ''), 160);
+  const company = clean(packageId === 'launch-monthly' ? '$9.99/month offer · ' + String(body.goal || '') : body.company, 160);
   const url = clean(body.url, 300);
   const goal = clean(body.goal, 1200);
   const email = clean(body.email, 254).toLowerCase();
