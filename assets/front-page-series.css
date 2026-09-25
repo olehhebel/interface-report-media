@@ -1,6 +1,6 @@
 .front-page-series{padding:clamp(52px,7vw,96px) 0 50px;background:#f6f6f2;border-top:1px solid rgba(8,10,13,.1);overflow:hidden}
 .series-head{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:28px}
-.series-head h2{max-width:850px;font-size:clamp(38px,5.4vw,76px);line-height:1;letter-spacing:-.055em;font-weight:500;margin:11px 0 12px}
+.series-head h2{max-width:850px;font-family:var(--font-ui);font-size:clamp(38px,5.4vw,76px);line-height:1;letter-spacing:-.055em;font-weight:500;margin:11px 0 12px}
 .series-head p{font-size:17px;line-height:1.5;color:#586377;margin:0}
 .series-controls{display:flex;gap:8px;flex:none}
 .series-controls button{width:48px;height:48px;border:1px solid #ccd7ea;border-radius:50%;background:#fff;color:#0b2550;font:25px/1 inherit;cursor:pointer}
@@ -10,14 +10,15 @@
 .series-track,.series-group{display:flex;gap:16px;width:max-content}
 .series-track{gap:0}
 .series-group{padding-right:16px}
-.series-card{box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:flex-start;width:clamp(290px,29vw,390px);min-height:340px;padding:28px;border:1px solid #dce5f3;border-radius:19px;background:#fff;box-shadow:0 15px 40px rgba(20,48,101,.035)}
+.series-card{box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:flex-start;width:clamp(290px,29vw,390px);min-height:340px;padding:28px;border:1px solid var(--line);border-radius:0;background:var(--paper);font-family:var(--font-ui);transition:background .2s var(--ease)}
+.series-card:hover{background:#fff}
 .series-card-index{display:block;margin-top:26px;color:#6b778d;font-size:11px;text-transform:uppercase;letter-spacing:.07em}
-.series-card h3{font-size:clamp(25px,2.25vw,32px);line-height:1.1;letter-spacing:-.04em;margin:12px 0 13px;font-weight:600}
-.series-card p{font-size:15px;line-height:1.45;color:#566174;margin:0 0 24px}
-.series-card a{margin-top:auto;display:inline-flex;gap:14px;align-items:center;min-height:40px;color:#065dff;font-size:14px;font-weight:750;text-decoration:none}
+.series-card h3{font-size:clamp(25px,2.3vw,38px);line-height:1.04;letter-spacing:-.035em;margin:28px 0 18px;font-weight:500}
+.series-card p{font-size:16px;line-height:1.5;color:var(--muted);margin:0 0 24px}
+.series-card a{margin-top:auto;display:inline-flex;gap:14px;align-items:center;min-height:40px;color:var(--blue);font-size:14px;font-weight:600;text-decoration:none}
 .series-card a:hover{text-decoration:underline;text-underline-offset:4px}
-.series-badge{display:inline-flex;align-items:center;min-height:25px;padding:4px 10px;border-radius:999px;background:#e6f0ff;color:#064cbd;font-weight:800;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
-.series-invite{background:#065dff;color:#fff;border-color:#065dff}
+.series-badge{display:inline-flex;align-items:center;min-height:25px;padding:4px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.series-invite,.series-invite:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
 .series-invite .series-badge-sponsored{background:#fff;color:#065dff}
 .series-plus{display:block;color:#fff;font-size:100px;font-weight:300;line-height:.9;margin:12px 0 -12px;letter-spacing:-.09em}
 .series-invite h3{margin-top:15px}.series-invite p{color:rgba(255,255,255,.85)}
