@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
+  <url><loc>https://interfacereport.com/</loc><lastmod>2026-09-28</lastmod><image:image><image:loc>https://interfacereport.com/assets/og-default.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/about/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/commercial-deck/</loc><lastmod>2026-09-23</lastmod></url>
   <url><loc>https://interfacereport.com/advertise/</loc><lastmod>2026-09-12</lastmod></url>
@@ -10,7 +10,7 @@
   <url><loc>https://interfacereport.com/contact/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/corrections/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/editorial-guidelines/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-23</lastmod></url>
+  <url><loc>https://interfacereport.com/latest/</loc><lastmod>2026-09-28</lastmod></url>
   <url><loc>https://interfacereport.com/media-kit/</loc><lastmod>2026-09-11</lastmod></url>
   <url><loc>https://interfacereport.com/newsletter/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/privacy/</loc><lastmod>2026-09-11</lastmod></url>
@@ -23,7 +23,7 @@
   <url><loc>https://interfacereport.com/topics/ai-products/</loc><lastmod>2026-09-21</lastmod></url>
   <url><loc>https://interfacereport.com/topics/ai-agents/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/topics/human-ai/</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-23</lastmod></url>
+  <url><loc>https://interfacereport.com/topics/design-ux/</loc><lastmod>2026-09-28</lastmod></url>
   <url><loc>https://interfacereport.com/topics/engineering/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/topics/startups-saas/</loc><lastmod>2026-09-12</lastmod></url>
   <url><loc>https://interfacereport.com/analysis/agent-ux-patterns/</loc><lastmod>2026-09-11</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
@@ -59,4 +59,4 @@
   <url><loc>https://interfacereport.com/analysis/atlassian-governed-agent-loops-sdlc/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/figma-prototype-to-product-decision/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/patterns.png</image:loc></image:image></url>
   <url><loc>https://interfacereport.com/analysis/salesforce-agent-script-deterministic-control/</loc><lastmod>2026-09-25</lastmod><image:image><image:loc>https://interfacereport.com/assets/agent-control-surface.png</image:loc></image:image></url>
-</urlset>
+<url><loc>https://interfacereport.com/analysis/when-to-create-a-second-brand/</loc><lastmod>2026-09-28</lastmod></url><url><loc>https://interfacereport.com/analysis/multi-brand-interface-shared-behavior/</loc><lastmod>2026-09-28</lastmod></url><url><loc>https://interfacereport.com/analysis/transparent-cross-promotion-founder-brands/</loc><lastmod>2026-09-28</lastmod></url></urlset>
