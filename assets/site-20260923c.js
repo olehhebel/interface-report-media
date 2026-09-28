@@ -7,13 +7,13 @@ function applyBranding(){
   if(headerBrand){
     headerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';
+    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
     const name=document.createElement('span');name.textContent='Interface Report';headerBrand.append(img,name);
   }
   for(const footerBrand of document.querySelectorAll('.footer-brand')){
     footerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';
+    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
     const name=document.createElement('span');name.textContent='Interface Report';footerBrand.append(img,name);
   }
   for(const oldIcon of [...document.querySelectorAll('link[rel~="icon"],link[rel="shortcut icon"]')]) oldIcon.remove();
