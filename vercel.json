@@ -4,6 +4,10 @@
   "trailingSlash": true,
   "ignoreCommand": "if [ \"$VERCEL_PROJECT_ID\" = \"prj_6Ra5ukPnJccbsSMkq260XlIYEnML\" ]; then exit 1; else echo 'Skipping non-production Vercel project' && exit 0; fi",
   "redirects": [
+    {"source": "/assets/interface-report-mark.jpg", "destination": "/assets/interface-report-mark.png", "permanent": true},
+    {"source": "/assets/interface-report-logo.png", "destination": "/assets/interface-report-mark.png", "permanent": true},
+    {"source": "/assets/favicon.png", "destination": "/assets/interface-report-mark.png", "permanent": true},
+    {"source": "/assets/favicon.svg", "destination": "/assets/interface-report-mark.png", "permanent": true},
     {
       "source": "/(.*)",
       "has": [{"type": "host", "value": "www.interfacereport.com"}],

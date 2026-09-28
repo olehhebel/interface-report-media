@@ -7,11 +7,11 @@ import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-LOGO_URL = "https://interfacereport.com/assets/interface-report-logo.png"
+LOGO_URL = "https://interfacereport.com/assets/interface-report-mark.png"
 HEADER_OLD = '<a class="brand" href="/"><span class="brand-dot"></span>Interface Report</a>'
-HEADER_NEW = '<a class="brand" href="/" aria-label="Interface Report home"><img src="/assets/interface-report-logo.png" width="1536" height="768" alt="Interface Report" decoding="async" style="display:block;height:32px;width:auto"/></a>'
-FOOTER_OLD = '<div class="footer-brand">Interface<br/>Report.</div>'
-FOOTER_NEW = '<a href="/" aria-label="Interface Report home"><img src="/assets/interface-report-logo.png" width="1536" height="768" alt="Interface Report" loading="lazy" decoding="async" style="display:block;width:180px;height:auto"/></a>'
+HEADER_NEW = '<a class="brand" href="/" aria-label="Interface Report home"><img src="/assets/interface-report-mark.png" width="1254" height="1254" alt="" decoding="async" class="ir-brand-symbol"/><span>Interface Report</span></a>'
+FOOTER_OLD = '<div class="footer-brand"><img src="/assets/interface-report-mark.png" width="1254" height="1254" alt="" loading="lazy" decoding="async" class="ir-brand-symbol"/><span>Interface Report</span></div>'
+FOOTER_NEW = '<a class="footer-brand" href="/" aria-label="Interface Report home"><img src="/assets/interface-report-mark.png" width="1254" height="1254" alt="" loading="lazy" decoding="async" class="ir-brand-symbol"/><span>Interface Report</span></a>'
 SCRIPT_RE = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
 
@@ -35,8 +35,8 @@ def repair_jsonld(raw: str) -> str:
                     "@id": "https://interfacereport.com/#logo",
                     "url": LOGO_URL,
                     "contentUrl": LOGO_URL,
-                    "width": 1536,
-                    "height": 768,
+                    "width": 1254,
+                    "height": 1254,
                     "caption": "Interface Report",
                 }
                 if node.get("logo") != logo:

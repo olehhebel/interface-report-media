@@ -1,19 +1,19 @@
-const BRAND_LOGO='/assets/interface-report-mark.jpg';
-const BRAND_LOGO_ABS='https://interfacereport.com/assets/interface-report-mark.jpg';
-const FAVICON='/assets/favicon.png';
+const BRAND_LOGO='/assets/interface-report-mark.png';
+const BRAND_LOGO_ABS='https://interfacereport.com/assets/interface-report-mark.png';
+const FAVICON='/assets/interface-report-mark.png';
 
 function applyBranding(){
   const headerBrand=document.querySelector('.brand');
   if(headerBrand){
     headerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=925;img.height=1055;img.className='ir-brand-symbol';
+    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';
     const name=document.createElement('span');name.textContent='Interface Report';headerBrand.append(img,name);
   }
   for(const footerBrand of document.querySelectorAll('.footer-brand')){
     footerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=925;img.height=1055;img.className='ir-brand-symbol';
+    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';
     const name=document.createElement('span');name.textContent='Interface Report';footerBrand.append(img,name);
   }
   for(const oldIcon of [...document.querySelectorAll('link[rel~="icon"],link[rel="shortcut icon"]')]) oldIcon.remove();
@@ -26,8 +26,8 @@ function applyBranding(){
         if(Array.isArray(value)){value.forEach(visit);return;}
         const types=Array.isArray(value['@type'])?value['@type']:[value['@type']];
         if(types.includes('Organization')||types.includes('NewsMediaOrganization')){
-          value.logo={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":925,"height":1055};
-          value.image={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":925,"height":1055};
+          value.logo={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":1254,"height":1254};
+          value.image={"@type":"ImageObject","url":BRAND_LOGO_ABS,"contentUrl":BRAND_LOGO_ABS,"width":1254,"height":1254};
         }
         Object.values(value).forEach(visit);
       };

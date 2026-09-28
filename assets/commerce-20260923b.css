@@ -15,8 +15,8 @@
 @media(prefers-reduced-motion:reduce){.ir-telegram-fab-dot{animation:none}.ir-telegram-fab,.ir-price-actions a{transition:none}}
 /* Commercial Deck and restored brand */
 .brand{display:inline-flex!important;align-items:center;gap:10px;text-decoration:none!important;white-space:nowrap;font-weight:750;font-size:clamp(15px,1.5vw,21px);letter-spacing:-.045em;color:#080a0d}
-.brand .ir-brand-symbol,.footer-brand .ir-brand-symbol{display:block;width:34px;height:39px;object-fit:cover;object-position:center}
-.footer-brand{display:flex;align-items:center;gap:12px;font-size:23px;line-height:1.1}
+.brand .ir-brand-symbol,.footer-brand .ir-brand-symbol{display:block;width:46px;height:46px;object-fit:contain;object-position:center;flex:none}
+.footer a.footer-brand{display:flex;align-items:center;gap:12px;font-size:23px;line-height:1.1}
 .ir-deck{padding:clamp(64px,9vw,128px) 0;background:#f2f6ff;border-top:1px solid #dae5ff;border-bottom:1px solid #dae5ff}
 .ir-deck-page{min-height:75vh;padding-top:clamp(42px,7vw,92px)}
 .ir-deck-heading{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(230px,.7fr);align-items:end;gap:32px;margin-bottom:38px}
