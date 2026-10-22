@@ -16,3 +16,9 @@ Canonical domain: https://interfacereport.com/
 Production source-of-truth is `main`; `launch` should mirror the same release commit.
 
 The custom domain and HTTPS are live. Keep Google Search Console ownership verified, submit `/sitemap.xml`, and inspect representative canonical URLs. Submit IndexNow only while the published key file resolves publicly.
+
+## Latest editorial publication
+
+- 2026-10-22: [Claude Duet Is Here. Your Attention Is the Interface.](https://interfacereport.com/analysis/claude-duet-proactive-agent-attention-ux/) — original analysis of Claude Duet, proactive-agent UX, attention and action approvals, based on verified Anthropic sources.
+- Homepage rotation: new lead first; the previous lead remains visibly linked below. Published articles and permanent URLs are retained.
+- Publication includes article metadata/schema, original 1600×900 editorial artwork, RSS, sitemap and topic/author listings. Validate with `python scripts/check_site.py` before release.
