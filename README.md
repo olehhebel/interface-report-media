@@ -19,6 +19,7 @@ The custom domain and HTTPS are live. Keep Google Search Console ownership verif
 
 ## Latest editorial publication
 
+- 2026-10-23: [Your AI Agent May Need Fewer Agents](https://interfacereport.com/analysis/single-agent-loop-fewer-subagents/) — evidence-led analysis of Anthropic’s October 22 single-agent loop guidance, migration limits and outcome evaluation.
 - 2026-10-22: [Claude Duet Is Here. Your Attention Is the Interface.](https://interfacereport.com/analysis/claude-duet-proactive-agent-attention-ux/) — original analysis of Claude Duet, proactive-agent UX, attention and action approvals, based on verified Anthropic sources.
 - Homepage rotation: new lead first; the previous lead remains visibly linked below. Published articles and permanent URLs are retained.
 - Publication includes article metadata/schema, original 1600×900 editorial artwork, RSS, sitemap and topic/author listings. Validate with `python scripts/check_site.py` before release.
