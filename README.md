@@ -19,6 +19,7 @@ The custom domain and HTTPS are live. Keep Google Search Console ownership verif
 
 ## Latest editorial publication
 
+- 2026-10-24: [TanStack AI 1.0: What Happens After Reload?](https://interfacereport.com/analysis/tanstack-ai-1-0-recovery-ux/) — analysis of the October 23 TanStack AI 1.0 release, stable-core boundaries and the product design of agent recovery.
 - 2026-10-23: [Your AI Agent May Need Fewer Agents](https://interfacereport.com/analysis/single-agent-loop-fewer-subagents/) — evidence-led analysis of Anthropic’s October 22 single-agent loop guidance, migration limits and outcome evaluation.
 - 2026-10-22: [Claude Duet Is Here. Your Attention Is the Interface.](https://interfacereport.com/analysis/claude-duet-proactive-agent-attention-ux/) — original analysis of Claude Duet, proactive-agent UX, attention and action approvals, based on verified Anthropic sources.
 - Homepage rotation: new lead first; the previous lead remains visibly linked below. Published articles and permanent URLs are retained.
