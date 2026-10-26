@@ -19,6 +19,7 @@ The custom domain and HTTPS are live. Keep Google Search Console ownership verif
 
 ## Latest editorial publication
 
+- 2026-10-26: [Open Agent Standards Need a Portability Test](https://interfacereport.com/analysis/aaif-agent-standards-portability-test/) — original analysis of AAIF’s October 22 project additions and a product-focused portability review across skills, interfaces, environments and execution.
 - 2026-10-25: [Claude on Google Cloud: Who Runs Your API?](https://interfacereport.com/analysis/claude-google-cloud-operator-choice/) — analysis of Anthropic’s October 22 Google Cloud launch, operator differences, feature access and product migration decisions.
 - 2026-10-24: [TanStack AI 1.0: What Happens After Reload?](https://interfacereport.com/analysis/tanstack-ai-1-0-recovery-ux/) — analysis of the October 23 TanStack AI 1.0 release, stable-core boundaries and the product design of agent recovery.
 - 2026-10-23: [Your AI Agent May Need Fewer Agents](https://interfacereport.com/analysis/single-agent-loop-fewer-subagents/) — evidence-led analysis of Anthropic’s October 22 single-agent loop guidance, migration limits and outcome evaluation.
