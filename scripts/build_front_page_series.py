@@ -56,7 +56,7 @@ def article_html(a: dict) -> str:
     related = [b for b in ARTICLES if b is not a][:2]
     related_html = ''.join(f'<li><a href="/analysis/{e(b["slug"])}/">{e(b["title"])} →</a></li>' for b in related)
     own = ('<div class="portfolio-source-note"><strong>Explore the three products:</strong> '
-           '<a href="https://superprompt.pro/" rel="sponsored noopener">Oleh Hebel &amp; Co / SuperPrompt ↗</a> · '
+           '<a href="https://olehhebel.top/" rel="sponsored noopener">Oleh Hebel &amp; Co / Oleh Hebel & Co ↗</a> · '
            '<a href="https://interfacereport.com/">Interface Report ↗</a> · '
            '<a href="https://shipindexgrow.top/" rel="sponsored noopener">Ship Index Grow ↗</a> · '
            '<a href="https://www.linkedin.com/in/olehhebel/" rel="noopener">Oleh on LinkedIn ↗</a></div>') if a['slug'].startswith('oleh-hebel') else ''
