@@ -136,9 +136,12 @@ function bindAdvertiserForm(form){
     payload.source=launchOffer?'homepage-launch-monthly-9.99':'advertise-page';
     track('advertiser_lead_start',{package:payload.package});
     try{
-      const response=await fetch('/api/advertiser-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
-      const data=await response.json().catch(()=>({}));
-      if(!response.ok)throw new Error(data.error||'submission_failed');
+      if(payload.company_website) throw new Error('submission_failed');
+      const mailPayload={access_key:'54d405a9-39f1-41cc-8263-276e0ebaf3c6',subject:'Interface Report — new commercial application',from_name:'Interface Report',...payload};
+      const response=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},body:JSON.stringify(mailPayload)});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok||result.success!==true)throw new Error('submission_failed');
+      const data={applicationId:'Email',checkoutUrl:null};
       note.textContent=`Application ${data.applicationId} received.`;
       form.closest('dialog')?.close();
       if(launchOffer)showLaunchConfirmation(data);
