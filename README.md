@@ -19,6 +19,9 @@ The custom domain and HTTPS are live. Keep Google Search Console ownership verif
 
 ## Latest editorial publication
 
+- 2026-10-30: [AI Product Discovery: Your Story Comes Before SEO Hype](https://interfacereport.com/analysis/ai-product-discovery-story-before-seo-hype/) — practical, source-backed framework for product narratives, AI search eligibility and transparent sponsored distribution.
+- Updated homepage and advertising copy to emphasize the $9.99/month offer, its deliverables and review-before-payment terms.
+
 - 2026-10-26: [Open Agent Standards Need a Portability Test](https://interfacereport.com/analysis/aaif-agent-standards-portability-test/) — original analysis of AAIF’s October 22 project additions and a product-focused portability review across skills, interfaces, environments and execution.
 - 2026-10-25: [Claude on Google Cloud: Who Runs Your API?](https://interfacereport.com/analysis/claude-google-cloud-operator-choice/) — analysis of Anthropic’s October 22 Google Cloud launch, operator differences, feature access and product migration decisions.
 - 2026-10-24: [TanStack AI 1.0: What Happens After Reload?](https://interfacereport.com/analysis/tanstack-ai-1-0-recovery-ux/) — analysis of the October 23 TanStack AI 1.0 release, stable-core boundaries and the product design of agent recovery.

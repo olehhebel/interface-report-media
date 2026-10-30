@@ -20,3 +20,11 @@
 .ir-launch-form .ir-form-head p{font-size:15px;line-height:1.5;margin:0;color:#46536b}
 .ir-launch-form .ir-launch-terms{margin:18px 0 0;font-size:13px;line-height:1.5;color:#586377}
 @media(max-width:700px){.launch-hero{padding:20px}.launch-hero .hero-order{width:100%;font-size:16px;gap:12px}.launch-ribbon-inner{align-items:stretch;flex-direction:column;gap:18px}.launch-ribbon a{width:100%}.ir-launch-form .ir-form-head{grid-template-columns:1fr}}
+
+/* Clear launch price hierarchy; static offer without artificial countdowns. */
+.launch-hero .launch-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:14px 0;max-width:100%;line-height:1}
+.launch-hero .launch-price strong{font-size:clamp(64px,8vw,112px);font-weight:850;letter-spacing:-.065em;line-height:1}
+.launch-hero .launch-price span{font-size:clamp(19px,2.5vw,28px);color:#34405a;letter-spacing:-.02em}
+.launch-hero{border:2px solid #065dff;box-shadow:0 14px 40px #065dff12}
+.launch-hero .hero-order{display:inline-flex;background:#065dff;color:#fff;border-radius:12px;text-decoration:none;align-items:center;justify-content:space-between;gap:20px;font-weight:750}
+@media(max-width:420px){.launch-hero .launch-price strong{font-size:68px}.launch-hero .launch-price span{font-size:20px}}
