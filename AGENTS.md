@@ -1,7 +1,7 @@
 # Ecosystem agent instructions
 
 Read `.github/ecosystem/projects.json` in the portfolio repository:
-https://github.com/olehhebel/ai-superprompt-studio/blob/index.html/.github/ecosystem/projects.json
+https://github.com/olehhebel/olehhebel.top/blob/index.html/.github/ecosystem/projects.json
 
 This is the shared registry for Oleh Hebel & Co, Ship Index Grow and Interface Report.
 The local repository remains authoritative for implementation and nested instructions.
