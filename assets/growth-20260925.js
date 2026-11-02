@@ -104,7 +104,7 @@ function advertiserForm(packageId='sponsored'){
     return form;
   }
   form.innerHTML=`
-    <div class="ir-form-head"><div><span>Commercial intake</span><h3>Tell us about your campaign.</h3></div><p>We review every proposal. After submission, you will see the next payment step.</p></div>
+    <div class="ir-form-head"><div><span>Commercial intake</span><h3>Tell us about your campaign.</h3></div><p>We review every proposal. If your project is a fit, we will email you about the next steps before payment.</p></div>
     <div class="ir-form-grid">
       <label><span>Package</span><select name="package" required><option value="sponsored">Sponsored Story · $99</option><option value="feature">Founder / Product Feature · $149</option><option value="distribution">Feature + Distribution · $199</option></select></label>
       <label><span>Company / product</span><input name="company" autocomplete="organization" required maxlength="160" placeholder="Acme AI"></label>
@@ -114,7 +114,7 @@ function advertiserForm(packageId='sponsored'){
       <label><span>Telegram (optional)</span><input name="telegram" maxlength="80" placeholder="@username"></label>
     </div>
     <label class="ir-consent"><input type="checkbox" name="consent" required><span>I understand that submission and payment do not guarantee publication or a positive editorial conclusion.</span></label>
-    <div class="ir-form-actions"><button type="submit">Submit for editorial review ↗</button><a href="/api/telegram-link?start=site">Prefer Telegram? Open the commercial desk ↗</a></div>
+    <div class="ir-form-actions"><button type="submit">Submit for editorial review ↗</button><a href="/commercial-deck/">View commercial packages and terms ↗</a></div>
     <div class="ir-form-note" role="status" aria-live="polite"></div>`;
   addHoneypot(form);
   return form;
@@ -149,7 +149,8 @@ function bindAdvertiserForm(form){
       track('advertiser_lead_complete',{package:payload.package});
       form.reset();
     }catch(error){
-      note.textContent=error.message==='email_not_configured'?'Email delivery is being configured. Your request was not sent. Please use the Telegram commercial desk.': 'We could not email your request. Please use the Telegram commercial desk instead.';
+      note.textContent='Your request was not sent. Please try again later or review our commercial packages. ';
+      const fallback=document.createElement('a');fallback.href='/commercial-deck/';fallback.textContent='Open the commercial deck ↗';note.appendChild(fallback);
       track('advertiser_lead_error',{package:payload.package,error:error.message});
     }finally{button.disabled=false;button.textContent=previous;}
   });
@@ -171,9 +172,9 @@ function showCheckout(data,packageId){
   const panel=document.createElement('div');panel.className='ir-checkout-panel';
   const close=document.createElement('button');close.type='button';close.className='ir-checkout-close';close.setAttribute('aria-label','Close payment step');close.textContent='×';
   const kicker=document.createElement('div');kicker.className='kicker';kicker.textContent='Application received';
-  const heading=document.createElement('h2');heading.textContent='Next: payment';
+  const heading=document.createElement('h2');heading.textContent=data.checkoutUrl?'Next: payment':'Next: editorial review';
   const summary=document.createElement('p');summary.textContent=`${labels[packageId]||'Commercial package'} · Reference ${data.applicationId}`;
-  const message=document.createElement('p');message.textContent=data.checkoutUrl?`Complete payment securely in UAH (${data.checkoutAmountUAH}). Available card or wallet methods depend on your device.`: 'Your brief is with our commercial desk. Secure checkout is being connected. We will send you a payment link after reviewing your request.';
+  const message=document.createElement('p');message.textContent=data.checkoutUrl?`Complete payment securely in UAH (${data.checkoutAmountUAH}). Available card or wallet methods depend on your device.`: 'Your brief is with our commercial desk. We will review your project and email you about editorial fit and payment details. No payment or subscription has been started.';
   panel.append(close,kicker,heading,summary,message);
   if(data.checkoutUrl){const pay=document.createElement('a');pay.className='ir-checkout-pay';pay.href=data.checkoutUrl;pay.rel='noopener';pay.textContent='Continue to secure payment ↗';panel.appendChild(pay);}
   const policy=document.createElement('small');policy.textContent='Publication is subject to editorial review. Payment does not guarantee publication.';panel.appendChild(policy);
