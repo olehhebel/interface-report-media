@@ -54,6 +54,31 @@ for p in root.rglob('*.html'):
         except Exception:
             errors.append(f'{rel}: invalid JSON-LD')
 
+    # Validate actual translated routes, not manufactured language URLs.
+    alternates = h.find_all('link', rel='alternate', hreflang=True)
+    for alternate in alternates:
+        url = alternate.get('href', '')
+        parsed = urlparse(url)
+        if parsed.netloc != 'interfacereport.com':
+            errors.append(f'{rel}: foreign language alternate {url}')
+            continue
+        target = root / parsed.path.lstrip('/') / 'index.html'
+        if parsed.path == '/': target = root / 'index.html'
+        if not target.exists():
+            errors.append(f'{rel}: missing language alternate {url}')
+            continue
+        translated = BeautifulSoup(target.read_text(encoding='utf-8'), 'html.parser')
+        code = alternate['hreflang']
+        if code != 'x-default' and translated.html.get('lang') != code:
+            errors.append(f'{rel}: alternate language mismatch {url}')
+        if canonical and not translated.find('link', rel='alternate', href=canonical.get('href')):
+            errors.append(f'{rel}: non-reciprocal language alternate {url}')
+
+    for image in s.find_all('img', src=True):
+        src = image['src'].split('?')[0]
+        if src.startswith('/') and not src.startswith('//') and not (root / src.lstrip('/')).is_file():
+            errors.append(f'{rel}: missing image {src}')
+
     if rel.startswith('analysis/'):
         if len(s.title.get_text()) > 65:
             errors.append(f'{rel}: title too long')

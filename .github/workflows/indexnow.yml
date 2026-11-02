@@ -1,0 +1,22 @@
+name: Notify IndexNow after publication
+on:
+  push:
+    branches: [main]
+    paths: ['sitemap.xml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: indexnow
+  cancel-in-progress: true
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify publication and notify search engines
+        run: python scripts/notify_indexnow.py

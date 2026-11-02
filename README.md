@@ -19,6 +19,10 @@ The custom domain and HTTPS are live. Keep Google Search Console ownership verif
 
 ## Latest editorial publication
 
+- 2026-11-02: Two original analyses, each in English and Ukrainian: streaming AI accessibility and contact-form reliability after static hosting migration. Includes language switches, linked contents, source notes and exact editorial diagrams. All previous articles remain available.
+- Rebuild this package with `python scripts/publish_20261102.py`; run `python scripts/refresh_news_sitemap.py` after publishing to keep News metadata within the last 48 hours. The regular sitemap retains historical URLs. Empty News maps between publications are intentional.
+- `Notify IndexNow after publication` waits for the public sitemap and ownership key before notifying search engines. A notification is not proof of indexing.
+
 - 2026-10-30: [AI Product Discovery: Your Story Comes Before SEO Hype](https://interfacereport.com/analysis/ai-product-discovery-story-before-seo-hype/) — practical, source-backed framework for product narratives, AI search eligibility and transparent sponsored distribution.
 - Updated homepage and advertising copy to emphasize the $9.99/month offer, its deliverables and review-before-payment terms.
 
