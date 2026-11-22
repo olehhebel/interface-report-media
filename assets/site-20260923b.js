@@ -1,19 +1,22 @@
-const BRAND_LOGO='/assets/interface-report-mark.png';
+const compactMark = '/assets/interface-report-mark-144.png';
+const hasCompactMark = document.querySelector('.brand img[src="' + compactMark + '"]');
+const BRAND_LOGO = hasCompactMark ? compactMark : '/assets/interface-report-mark.png';
+const BRAND_LOGO_SIZE = hasCompactMark ? 144 : 1254;
 const BRAND_LOGO_ABS='https://interfacereport.com/assets/interface-report-mark.png';
-const FAVICON='/assets/interface-report-mark.png';
+const FAVICON=BRAND_LOGO;
 
 function applyBranding(){
   const headerBrand=document.querySelector('.brand');
   if(headerBrand){
     headerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
+    img.src=BRAND_LOGO;img.alt='';img.width=BRAND_LOGO_SIZE;img.height=BRAND_LOGO_SIZE;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
     const name=document.createElement('span');name.textContent='Interface Report';headerBrand.append(img,name);
   }
   for(const footerBrand of document.querySelectorAll('.footer-brand')){
     footerBrand.innerHTML='';
     const img=document.createElement('img');
-    img.src=BRAND_LOGO;img.alt='';img.width=1254;img.height=1254;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
+    img.src=BRAND_LOGO;img.alt='';img.width=BRAND_LOGO_SIZE;img.height=BRAND_LOGO_SIZE;img.className='ir-brand-symbol';img.style.width='46px';img.style.height='46px';img.style.objectFit='contain';
     const name=document.createElement('span');name.textContent='Interface Report';footerBrand.append(img,name);
   }
   for(const oldIcon of [...document.querySelectorAll('link[rel~="icon"],link[rel="shortcut icon"]')]) oldIcon.remove();
