@@ -188,6 +188,7 @@ function applyCommerce(){
   addPreferredSources();
 
   for(const trigger of document.querySelectorAll('[data-package]')){
+    if(trigger.dataset.package==='launch-monthly'){trigger.href='https://www.paypal.com/ncp/payment/2UPT6ZHZEABNN';continue;}
     if(trigger.dataset.irOrderBound==='1')continue;
     trigger.dataset.irOrderBound='1';
     trigger.addEventListener('click',event=>{
@@ -225,14 +226,20 @@ function applyCommerce(){
     if(prose&&!prose.querySelector('.ir-commerce-strip')){
       const strip=document.createElement('div');
       strip.className='ir-commerce-strip';
-      strip.innerHTML='<div><strong>Review first. Pay second.</strong><p>Send one short brief. We check editorial fit and evidence. Accepted applications receive the PayPal payment link.</p></div><a href="#commercial-intake">Start application ↗</a>';
+      strip.innerHTML='<div><strong>Custom campaigns</strong><p>Send one short brief. We check editorial fit and evidence. Accepted applications receive the PayPal payment link.</p></div><a href="#commercial-intake">Request a custom campaign ↗</a>';
       const firstH2=prose.querySelector('h2');
       if(firstH2)firstH2.insertAdjacentElement('afterend',strip);else prose.prepend(strip);
     }
     if(prose&&!document.querySelector('[data-advertiser-intake]')){
       const anchor=document.createElement('div');anchor.id='commercial-intake';anchor.className='ir-form-anchor';
       const requestedPackage=new URLSearchParams(location.search).get('package');
-      const form=advertiserForm(requestedPackage==='launch-monthly'?'launch-monthly':'sponsored');
+      const form=advertiserForm('sponsored');
+      if(requestedPackage==='launch-monthly'){
+        anchor.id='campaign-inquiry';
+        document.querySelectorAll('a[href="#commercial-intake"]').forEach(link=>{link.hash='campaign-inquiry';});
+        const offer=document.querySelector('.hero-order');
+        if(offer)offer.id='commercial-intake';
+      }
       anchor.appendChild(form);prose.appendChild(anchor);bindAdvertiserForm(form);
       if(slugs.includes(requestedPackage)){
         const select=form.querySelector('[name="package"]');
